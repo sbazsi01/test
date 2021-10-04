@@ -2,22 +2,29 @@ package hu.uni.eku.tzs.dao.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "payments")
-public class PaymentsEntity {
+public class PaymentEntity {
     @Id
-    private int customerNumber;
+    @OneToOne
+    @JoinColumn(name = "customerNumber")
+    @MapsId
+    private CustomerEntity customer;
 
+    @Id
+    @Column(name = "checkNumber", nullable = false, length = 50)
     private String checkNumber;
 
-    private java.sql.Date paymentDate;
+    @Column(name = "paymentDate", nullable = false)
+    private LocalDate paymentDate;
 
-    private double amount;
+    @Column(name = "amount", nullable = false)
+    private Double amount;
 
 }

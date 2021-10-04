@@ -10,18 +10,28 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "orderdetails")
-public class OrderDetailsEntity {
-    @Id
-    private int orderNumber;
+public class OrderDetailEntity {
 
     @Id
-    private String productCode;
+    @OneToOne
+    @JoinColumn(name = "orderNumber")
+    @MapsId
+    private OrderEntity order;
 
-    private int quantityOrdered;
+    @Id
+    @OneToOne
+    @JoinColumn(name = "productCode")
+    @MapsId
+    private ProductEntity product;
 
-    private double priceEach;
 
-    private short orderLineNumber;
+    @Column(name = "quantityOrdered", nullable = false)
+    private Integer quantityOrdered;
 
+    @Column(name = "priceEach", nullable = false)
+    private Double priceEach;
+
+    @Column(name = "orderLineNumber", nullable = false)
+    private Integer orderLineNumber;
 
 }
