@@ -4,34 +4,37 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "orderdetails")
-public class OrderDetailEntity {
+@IdClass(OrderDetailId.class)
+public class OrderDetailEntity implements Serializable {
 
     @Id
     @OneToOne
-    @JoinColumn(name = "orderNumber")
+    @JoinColumn(name = "order_number")
     @MapsId
     private OrderEntity order;
 
     @Id
     @OneToOne
-    @JoinColumn(name = "productCode")
+    @JoinColumn(name = "product_code")
     @MapsId
     private ProductEntity product;
 
 
-    @Column(name = "quantityOrdered", nullable = false)
-    private Integer quantityOrdered;
+    @Column(name = "quantity_ordered", nullable = false)
+    private int quantityOrdered;
 
-    @Column(name = "priceEach", nullable = false)
-    private Double priceEach;
+    @Column(name = "price_each", nullable = false)
+    private double priceEach;
 
-    @Column(name = "orderLineNumber", nullable = false)
-    private Integer orderLineNumber;
+    @Column(name = "order_line_number", nullable = false)
+    private int orderLineNumber;
 
 }
+

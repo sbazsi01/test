@@ -3,6 +3,7 @@ package hu.uni.eku.tzs.dao.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
@@ -10,21 +11,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "payments")
-public class PaymentEntity {
+@IdClass(PaymentId.class)
+public class PaymentEntity implements Serializable {
     @Id
     @OneToOne
-    @JoinColumn(name = "customerNumber")
+    @JoinColumn(name = "customer_number")
     @MapsId
     private CustomerEntity customer;
 
     @Id
-    @Column(name = "checkNumber", nullable = false, length = 50)
+    @Column(name = "check_number", nullable = false, length = 50)
     private String checkNumber;
 
-    @Column(name = "paymentDate", nullable = false)
-    private LocalDate paymentDate;
+    @Column(name = "payment_date", nullable = false)
+    private String paymentDate;
 
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private double amount;
 
 }

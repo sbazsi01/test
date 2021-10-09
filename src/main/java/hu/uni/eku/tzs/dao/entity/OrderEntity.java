@@ -15,17 +15,17 @@ import java.time.LocalDate;
 public class OrderEntity {
 
     @Id
-    @Column(name = "orderNumber", nullable = false)
-    private Integer orderNumber;
+    @Column(name = "order_number", nullable = false)
+    private int orderNumber;
 
-    @Column(name = "orderDate", nullable = false)
+    @Column(name = "order_date", nullable = false)
     private LocalDate orderDate;
 
-    @Column(name = "requiredDate", nullable = false)
-    private LocalDate requiredDate;
+    @Column(name = "required_date", nullable = false)
+    private String requiredDate;
 
-    @Column(name = "shippedDate")
-    private LocalDate shippedDate;
+    @Column(name = "shipped_date")
+    private String shippedDate;
 
     @Column(name = "status", nullable = false, length = 15)
     private String status;
@@ -35,7 +35,7 @@ public class OrderEntity {
     private String comments;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "customerNumber", nullable = false)
+    @JoinColumn(name = "customer_number", nullable = false)
     private CustomerEntity customer;
 
 }

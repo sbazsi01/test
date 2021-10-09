@@ -18,14 +18,14 @@ import java.sql.Blob;
 public class ProductLineEntity {
 
     @Id
-    @Column(name = "productLine", nullable = false, length = 50)
+    @Column(name = "product_line", nullable = false, length = 50)
     private String productLine;
 
-    @Column(name = "textDescription", length = 4000)
+    @Column(name = "text_description", length = 4000)
     private String textDescription;
 
     @Lob
-    @Column(name = "htmlDescription")
+    @Column(name = "html_description")
     private String htmlDescription;
 
     @Column(name = "image")

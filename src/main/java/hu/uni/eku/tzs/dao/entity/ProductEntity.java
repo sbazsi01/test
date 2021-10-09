@@ -14,30 +14,30 @@ import javax.persistence.*;
 public class ProductEntity {
 
     @Id
-    @Column(name = "productCode", nullable = false, length = 15)
+    @Column(name = "product_code", nullable = false, length = 15)
     private String productCode;
 
-    @Column(name = "productName", nullable = false, length = 70)
+    @Column(name = "product_name", nullable = false, length = 70)
     private String productName;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "productLine", nullable = false)
+    @JoinColumn(name = "product_line", nullable = false)
     private ProductLineEntity productLine;
 
-    @Column(name = "productScale", nullable = false, length = 10)
+    @Column(name = "product_scale", nullable = false, length = 10)
     private String productScale;
 
-    @Column(name = "productVendor", nullable = false, length = 50)
+    @Column(name = "product_vendor", nullable = false, length = 50)
     private String productVendor;
 
     @Lob
-    @Column(name = "productDescription", nullable = false)
+    @Column(name = "product_description", nullable = false)
     private String productDescription;
 
-    @Column(name = "quantityInStock", nullable = false)
+    @Column(name = "quantity_in_stock", nullable = false)
     private int quantityInStock;
 
-    @Column(name = "buyPrice", nullable = false)
+    @Column(name = "buy_price", nullable = false)
     private double buyPrice;
 
     @Column(name = "MSRP", nullable = false)
