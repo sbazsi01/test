@@ -22,10 +22,10 @@ public class OrderEntity {
     private LocalDate orderDate;
 
     @Column(name = "requiredDate", nullable = false)
-    private String requiredDate;
+    private LocalDate requiredDate;
 
     @Column(name = "shippedDate")
-    private String shippedDate;
+    private LocalDate shippedDate;
 
     @Column(name = "status", nullable = false, length = 15)
     private String status;

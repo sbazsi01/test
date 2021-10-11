@@ -47,7 +47,7 @@ public class CustomerEntity {
     private String country;
 
     @ManyToOne
-    @JoinColumn(name = "salesRepEmployee")
+    @JoinColumn(name = "salesRepEmployeeNumber")
     private EmployeeEntity salesRepEmployee;
 
     @Column(name = "creditLimit")

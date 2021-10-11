@@ -24,7 +24,7 @@ public class PaymentEntity implements Serializable {
     private String checkNumber;
 
     @Column(name = "paymentDate", nullable = false)
-    private String paymentDate;
+    private LocalDate paymentDate;
 
     @Column(name = "amount", nullable = false)
     private double amount;
