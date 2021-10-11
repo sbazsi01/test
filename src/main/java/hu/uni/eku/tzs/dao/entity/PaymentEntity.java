@@ -15,15 +15,15 @@ import java.time.LocalDate;
 public class PaymentEntity implements Serializable {
     @Id
     @OneToOne
-    @JoinColumn(name = "customer_number")
+    @JoinColumn(name = "customerNumber")
     @MapsId
     private CustomerEntity customer;
 
     @Id
-    @Column(name = "check_number", nullable = false, length = 50)
+    @Column(name = "checkNumber", nullable = false, length = 50)
     private String checkNumber;
 
-    @Column(name = "payment_date", nullable = false)
+    @Column(name = "paymentDate", nullable = false)
     private String paymentDate;
 
     @Column(name = "amount", nullable = false)

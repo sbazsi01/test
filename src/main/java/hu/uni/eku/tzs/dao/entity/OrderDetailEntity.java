@@ -16,24 +16,24 @@ public class OrderDetailEntity implements Serializable {
 
     @Id
     @OneToOne
-    @JoinColumn(name = "order_number")
+    @JoinColumn(name = "orderNumber")
     @MapsId
     private OrderEntity order;
 
     @Id
     @OneToOne
-    @JoinColumn(name = "product_code")
+    @JoinColumn(name = "productCode")
     @MapsId
     private ProductEntity product;
 
 
-    @Column(name = "quantity_ordered", nullable = false)
+    @Column(name = "quantityOrdered", nullable = false)
     private int quantityOrdered;
 
-    @Column(name = "price_each", nullable = false)
+    @Column(name = "priceEach", nullable = false)
     private double priceEach;
 
-    @Column(name = "order_line_number", nullable = false)
+    @Column(name = "orderLineNumber", nullable = false)
     private int orderLineNumber;
 
 }

@@ -13,13 +13,13 @@ public class EmployeeEntity {
 
 
     @Id
-    @Column(name = "employee_number", nullable = false)
+    @Column(name = "employeeNumber", nullable = false)
     private int employeeNumber;
 
-    @Column(name = "last_name", nullable = false, length = 50)
+    @Column(name = "lastName", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "first_name", nullable = false, length = 50)
+    @Column(name = "firstName", nullable = false, length = 50)
     private String firstName;
 
     @Column(name = "extension", nullable = false, length = 10)
@@ -29,13 +29,13 @@ public class EmployeeEntity {
     private String email;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "office_code", nullable = false)
+    @JoinColumn(name = "officeCode", nullable = false)
     private OfficeEntity office;
 
     @ManyToOne
-    @JoinColumn(name = "reports_to")
+    @JoinColumn(name = "reportsTo")
     private EmployeeEntity reportsTo;
 
-    @Column(name = "job_title", nullable = false, length = 50)
+    @Column(name = "jobTitle", nullable = false, length = 50)
     private String jobTitle;
 }
