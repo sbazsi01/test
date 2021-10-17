@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Office {
 
-    private String officeCode;
+    private int officeCode;
 
     private String city;
 

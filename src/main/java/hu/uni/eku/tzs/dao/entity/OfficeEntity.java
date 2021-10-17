@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Entity(name = "offices")
 public class OfficeEntity {
     @Id
-    private String officeCode;
+    private int officeCode;
 
     @Column
     private String city;
