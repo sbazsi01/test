@@ -9,7 +9,7 @@ import java.util.Collection;
 public interface OfficeManager {
     Office record(Office office) throws OfficeAlreadyExistsException;
 
-    Office readByOfficeCode(int officeCode) throws OfficeNotFoundException;
+    Office readByOfficeCode(String officeCode) throws OfficeNotFoundException;
 
     Collection<Office> readAll();
 

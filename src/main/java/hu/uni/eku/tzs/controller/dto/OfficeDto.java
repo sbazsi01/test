@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OfficeDto {
 
-    private int officeCode;
+    private String officeCode;
 
     private String city;
 

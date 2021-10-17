@@ -58,7 +58,7 @@ public class OfficeManagerImpl implements OfficeManager {
     }
 
     @Override
-    public Office readByOfficeCode(int officeCode) throws OfficeNotFoundException {
+    public Office readByOfficeCode(String officeCode) throws OfficeNotFoundException {
         Optional<OfficeEntity> entity = officeRepository.findById(officeCode);
         if (entity.isEmpty()) {
             throw new OfficeNotFoundException(String.format("Cannot find office with office code %s", officeCode));
