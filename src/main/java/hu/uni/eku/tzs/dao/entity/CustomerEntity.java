@@ -55,7 +55,6 @@ public class CustomerEntity {
     @JoinColumn(name = "salesRepEmployeeNumber")
     private EmployeeEntity salesRepEmployee;
 
-
     @Column(name = "creditLimit")
     private double creditLimit;
 }

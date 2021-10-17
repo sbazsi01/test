@@ -35,7 +35,7 @@ public class Customer {
 
     private String country;
 
-    private Integer SalesRepEmployeeNumber;
+    private Integer salesRepEmployeeNumber;
 
     private Double creditLimit;
 }

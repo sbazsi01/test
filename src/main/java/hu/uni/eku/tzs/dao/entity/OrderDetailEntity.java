@@ -33,7 +33,6 @@ public class OrderDetailEntity implements Serializable {
     @MapsId
     private ProductEntity product;
 
-
     @Column(name = "quantityOrdered", nullable = false)
     private int quantityOrdered;
 
