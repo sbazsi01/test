@@ -1,14 +1,13 @@
 package hu.uni.eku.tzs.dao.entity;
 
-
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import java.sql.Blob;
-
 
 @Data
 @Builder
@@ -30,5 +29,4 @@ public class ProductLineEntity {
 
     @Column(name = "image")
     private byte[] image;
-
 }

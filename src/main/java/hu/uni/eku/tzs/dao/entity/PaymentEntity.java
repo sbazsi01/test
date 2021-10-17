@@ -1,8 +1,16 @@
 package hu.uni.eku.tzs.dao.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.IdClass;
+import javax.persistence.OneToOne;
+import javax.persistence.MapsId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -13,6 +21,7 @@ import java.time.LocalDate;
 @Entity(name = "payments")
 @IdClass(PaymentId.class)
 public class PaymentEntity implements Serializable {
+
     @Id
     @OneToOne
     @JoinColumn(name = "customerNumber")
@@ -28,5 +37,4 @@ public class PaymentEntity implements Serializable {
 
     @Column(name = "amount", nullable = false)
     private double amount;
-
 }

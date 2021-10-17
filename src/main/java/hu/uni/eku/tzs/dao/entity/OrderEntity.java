@@ -1,11 +1,16 @@
 package hu.uni.eku.tzs.dao.entity;
 
-
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
-
 
 @Data
 @Builder
@@ -37,5 +42,4 @@ public class OrderEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "customerNumber", nullable = false)
     private CustomerEntity customer;
-
 }

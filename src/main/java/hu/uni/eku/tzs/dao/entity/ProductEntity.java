@@ -1,10 +1,15 @@
 package hu.uni.eku.tzs.dao.entity;
 
-
-import lombok.*;
-
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Lob;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -42,5 +47,4 @@ public class ProductEntity {
 
     @Column(name = "MSRP", nullable = false)
     private double msrp;
-
 }

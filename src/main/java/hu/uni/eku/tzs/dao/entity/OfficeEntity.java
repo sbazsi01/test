@@ -1,10 +1,12 @@
 package hu.uni.eku.tzs.dao.entity;
 
-import lombok.*;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -40,5 +42,4 @@ public class OfficeEntity {
 
     @Column(name = "territory", nullable = false, length = 10)
     private String territory;
-
 }

@@ -6,18 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
-
 @Getter
 @Setter
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Offices {
-    @Id
-    private String officeCode;
+@Data
+public class Customer {
 
-    private String city;
+    private Integer customerNumber;
+
+    private String customerName;
+
+    private String contactLastName;
+
+    private String contactFirstName;
 
     private String phone;
 
@@ -25,11 +27,15 @@ public class Offices {
 
     private String addressLine2;
 
-    private String state;
+    private String city;
 
-    private String country;
+    private String state;
 
     private String postalCode;
 
-    private String territory;
+    private String country;
+
+    private Integer SalesRepEmployeeNumber;
+
+    private Double creditLimit;
 }

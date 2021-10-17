@@ -1,5 +1,4 @@
-package hu.uni.eku.tzs.model;
-
+/*package hu.uni.eku.tzs.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,18 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
-
 @Getter
 @Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Orders {
+public class Order {
     @Id
-    private int orderNumber;
+    private Integer orderNumber;
 
     private java.sql.Date orderDate;
 
@@ -30,6 +25,6 @@ public class Orders {
 
     private String comments;
 
-    private int customerNumber;
-
+    private Integer customerNumber;
 }
+*/

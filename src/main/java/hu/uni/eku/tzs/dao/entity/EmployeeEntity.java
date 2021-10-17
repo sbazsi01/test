@@ -1,8 +1,14 @@
 package hu.uni.eku.tzs.dao.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -11,10 +17,9 @@ import javax.persistence.*;
 @Entity(name = "employees")
 public class EmployeeEntity {
 
-
     @Id
     @Column(name = "employeeNumber", nullable = false)
-    private int employeeNumber;
+    private Integer employeeNumber;
 
     @Column(name = "lastName", nullable = false, length = 50)
     private String lastName;

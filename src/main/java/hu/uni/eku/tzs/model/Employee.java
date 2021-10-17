@@ -6,16 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
-
 @Getter
 @Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employees {
-    @Id
-    private int employeeNumber;
+public class Employee {
+
+    private Integer employeeNumber;
 
     private String lastName;
 
@@ -25,9 +23,7 @@ public class Employees {
 
     private String officeCode;
 
-    private int reportsTo;
+    private Integer reportsTo;
 
     private String jobTitle;
-
-
 }

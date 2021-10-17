@@ -1,9 +1,14 @@
 package hu.uni.eku.tzs.dao.entity;
 
-import lombok.*;
-
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -14,7 +19,7 @@ public class CustomerEntity {
 
     @Id
     @Column(name = "customerNumber", nullable = false)
-    private int customerNumber;
+    private Integer customerNumber;
 
     @Column(name = "customerName", nullable = false, length = 50)
     private String customerName;
@@ -50,7 +55,7 @@ public class CustomerEntity {
     @JoinColumn(name = "salesRepEmployeeNumber")
     private EmployeeEntity salesRepEmployee;
 
+
     @Column(name = "creditLimit")
     private double creditLimit;
-
 }
