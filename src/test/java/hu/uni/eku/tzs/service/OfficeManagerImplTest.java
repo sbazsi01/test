@@ -121,10 +121,10 @@ class OfficeManagerImplTest {
 
     private static class TestDataProvider {
 
-        public static int OFFICE_CODE_SAN_FRANCISCO = 1;
-        public static int OFFICE_CODE_BOSTON = 2;
-        public static int OFFICE_CODE_PARIS = 3;
-        public static int UNKNOWN_OFFICE_CODE = 10;
+        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
+        public static String OFFICE_CODE_BOSTON = "2";
+        public static String OFFICE_CODE_PARIS = "3";
+        public static String UNKNOWN_OFFICE_CODE = "10";
 
         public static Office getSanFranciscoOfficeModel() {
             return new Office(OFFICE_CODE_SAN_FRANCISCO, "San Francisco", "+1 650 219 4782", "100 Market Street",

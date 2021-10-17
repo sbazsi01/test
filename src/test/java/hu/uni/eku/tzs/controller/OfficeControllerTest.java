@@ -97,7 +97,7 @@ class OfficeControllerTest {
 
     @Test
     void deleteFromQueryParamWhenOfficeNotFound() throws OfficeNotFoundException {
-        final int notFoundOfficeCode = TestDataProvider.OFFICE_CODE_SAN_FRANCISCO;
+        final String notFoundOfficeCode = TestDataProvider.OFFICE_CODE_SAN_FRANCISCO;
         doThrow(new OfficeNotFoundException()).when(officeManager).readByOfficeCode(notFoundOfficeCode);
 
         assertThatThrownBy(() -> controller.delete(notFoundOfficeCode))
@@ -106,7 +106,7 @@ class OfficeControllerTest {
 
     private static class TestDataProvider {
 
-        public static int OFFICE_CODE_SAN_FRANCISCO = 1;
+        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
 
         public static Office getSanFranciscoOfficeModel() {
             return new Office(OFFICE_CODE_SAN_FRANCISCO, "San Francisco", "+1 650 219 4782", "100 Market Street",
