@@ -1,13 +1,9 @@
 package hu.uni.eku.tzs.controller;
 
-import hu.uni.eku.tzs.controller.dto.OfficeDto;
-import hu.uni.eku.tzs.controller.dto.OfficeMapper;
 import hu.uni.eku.tzs.controller.dto.ProductLinesDto;
 import hu.uni.eku.tzs.controller.dto.ProductLinesMapper;
-import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.model.ProductLines;
 import hu.uni.eku.tzs.service.ProductLinesManager;
-import hu.uni.eku.tzs.service.exceptions.OfficeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.ProductLinesAlreadyExistsException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

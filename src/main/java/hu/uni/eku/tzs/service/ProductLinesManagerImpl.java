@@ -1,10 +1,8 @@
 package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.ProductLinesRepository;
-import hu.uni.eku.tzs.dao.entity.OfficeEntity;
 import hu.uni.eku.tzs.dao.entity.ProductLinesEntity;
 import hu.uni.eku.tzs.model.ProductLines;
-import hu.uni.eku.tzs.service.exceptions.OfficeNotFoundException;
 import hu.uni.eku.tzs.service.exceptions.ProductLinesAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.ProductLinesNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductLinesManagerImpl implements ProductLinesManager{
+public class ProductLinesManagerImpl implements ProductLinesManager {
 
     private final ProductLinesRepository productLinesRepository;
 
-    private static ProductLines convertProductLinesEntity2Model(ProductLinesEntity productLinesEntity){
+    private static ProductLines convertProductLinesEntity2Model(ProductLinesEntity productLinesEntity) {
         return new ProductLines(
                 productLinesEntity.getProductLine(),
                 productLinesEntity.getTextDescription(),
@@ -29,7 +27,7 @@ public class ProductLinesManagerImpl implements ProductLinesManager{
         );
     }
 
-    private static ProductLinesEntity convertProductLinesModel2Entity(ProductLines productLines){
+    private static ProductLinesEntity convertProductLinesModel2Entity(ProductLines productLines) {
         return ProductLinesEntity.builder()
                 .productLine(productLines.getProductLine())
                 .textDescription(productLines.getTextDescription())
@@ -38,11 +36,9 @@ public class ProductLinesManagerImpl implements ProductLinesManager{
                 .build();
     }
 
-
-
     @Override
     public ProductLines record(ProductLines productLines) throws ProductLinesAlreadyExistsException {
-        if (productLinesRepository.findById(productLines.getProductLine()).isPresent()){
+        if (productLinesRepository.findById(productLines.getProductLine()).isPresent()) {
             throw new ProductLinesAlreadyExistsException();
         }
         ProductLinesEntity productLinesEntity = productLinesRepository.save(
