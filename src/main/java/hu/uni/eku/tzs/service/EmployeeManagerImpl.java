@@ -42,7 +42,7 @@ public class EmployeeManagerImpl implements EmployeeManager {
             employeeEntity.getExtension(),
             employeeEntity.getEmail(),
             officeManager.readByOfficeCode(employeeEntity.getOffice().getOfficeCode()),
-           /* reportsTo,*/
+            /* reportsTo,*/
             employeeEntity.getReportsTo(),
             employeeEntity.getJobTitle()
         );
@@ -67,7 +67,7 @@ public class EmployeeManagerImpl implements EmployeeManager {
         if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
             throw new EmployeeAlreadyExistsException();
         }
-      //  EmployeeEntity reportsTo = this.readOrRecordEmployee(employee.getReportsTo());
+        //  EmployeeEntity reportsTo = this.readOrRecordEmployee(employee.getReportsTo());
         OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
         EmployeeEntity employeeEntity = employeeRepository.save(
             EmployeeEntity.builder()
@@ -77,7 +77,7 @@ public class EmployeeManagerImpl implements EmployeeManager {
                 .extension(employee.getExtension())
                 .email(employee.getEmail())
                 .office(convertOfficeModel2Entity(employee.getOffice()))
-               // .reportsTo(convertEmployeeModel2Entity(employee.getReportsTo()))
+                // .reportsTo(convertEmployeeModel2Entity(employee.getReportsTo()))
                 .reportsTo(employee.getReportsTo())
                 .jobTitle(employee.getJobTitle())
                 .build()
