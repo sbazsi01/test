@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import static hu.uni.eku.tzs.service.OfficeManagerImpl.convertOfficeModel2Entity;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +22,6 @@ public class EmployeeManagerImpl implements EmployeeManager {
     private final EmployeeRepository employeeRepository;
 
     private final OfficeRepository officeRepository;
-
-    private final OfficeManagerImpl officeManager;
 
     private Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
         /*Employee reportsTo;
@@ -41,7 +38,17 @@ public class EmployeeManagerImpl implements EmployeeManager {
             employeeEntity.getFirstName(),
             employeeEntity.getExtension(),
             employeeEntity.getEmail(),
-            officeManager.readByOfficeCode(employeeEntity.getOffice().getOfficeCode()),
+            new Office(
+                    employeeEntity.getOffice().getOfficeCode(),
+                    employeeEntity.getOffice().getCity(),
+                    employeeEntity.getOffice().getPhone(),
+                    employeeEntity.getOffice().getAddressLine1(),
+                    employeeEntity.getOffice().getAddressLine2(),
+                    employeeEntity.getOffice().getState(),
+                    employeeEntity.getOffice().getCountry(),
+                    employeeEntity.getOffice().getPostalCode(),
+                    employeeEntity.getOffice().getTerritory()
+            ),
             /* reportsTo,*/
             employeeEntity.getReportsTo(),
             employeeEntity.getJobTitle()
@@ -150,5 +157,19 @@ public class EmployeeManagerImpl implements EmployeeManager {
                         .territory(office.getTerritory())
                         .build()
         );
+    }
+
+    public static OfficeEntity convertOfficeModel2Entity(Office office) {
+        return OfficeEntity.builder()
+                .officeCode(office.getOfficeCode())
+                .addressLine1(office.getAddressLine1())
+                .addressLine2(office.getAddressLine2())
+                .city(office.getCity())
+                .country(office.getCountry())
+                .state(office.getState())
+                .phone(office.getPhone())
+                .postalCode(office.getPostalCode())
+                .territory(office.getTerritory())
+                .build();
     }
 }
