@@ -6,6 +6,7 @@ import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.service.exceptions.OfficeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OfficeNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -32,7 +33,7 @@ public class OfficeManagerImpl implements OfficeManager {
         );
     }
 
-    private static OfficeEntity convertOfficeModel2Entity(Office office) {
+    public static OfficeEntity convertOfficeModel2Entity(Office office) {
         return OfficeEntity.builder()
                 .officeCode(office.getOfficeCode())
                 .addressLine1(office.getAddressLine1())
@@ -57,8 +58,9 @@ public class OfficeManagerImpl implements OfficeManager {
         return convertOfficeEntity2Model(officeEntity);
     }
 
+    @SneakyThrows
     @Override
-    public Office readByOfficeCode(String officeCode) throws OfficeNotFoundException {
+    public Office readByOfficeCode(String officeCode)  {
         Optional<OfficeEntity> entity = officeRepository.findById(officeCode);
         if (entity.isEmpty()) {
             throw new OfficeNotFoundException(String.format("Cannot find office with office code %s", officeCode));
