@@ -48,7 +48,7 @@ public class ProductManagerImpl implements ProductManager {
                 productEntity.getProductDescription(),
                 productEntity.getQuantityInStock(),
                 productEntity.getBuyPrice(),
-                productEntity.getMSRP()
+                productEntity.getMsrp()
         );
     }
 
@@ -62,7 +62,7 @@ public class ProductManagerImpl implements ProductManager {
                 .productDescription(product.getProductDescription())
                 .quantityInStock(product.getQuantityInStock())
                 .buyPrice(product.getBuyPrice())
-                .MSRP(product.getMSRP())
+                .msrp(product.getMsrp())
                 .build();
     }
 

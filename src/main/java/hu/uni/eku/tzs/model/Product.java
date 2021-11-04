@@ -25,5 +25,5 @@ public class Product {
 
     private double buyPrice;
 
-    private double MSRP;
+    private double msrp;
 }

@@ -134,7 +134,7 @@ class ProductControllerTest {
                     .productDescription(HARLEY_DAVIDSON_DESC)
                     .quantityInStock(7933)
                     .buyPrice(48.81)
-                    .MSRP(95.7)
+                    .msrp(95.7)
                     .build();
         }
 

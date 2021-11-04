@@ -30,5 +30,5 @@ public class ProductDto {
 
     private double buyPrice;
 
-    private double MSRP;
+    private double msrp;
 }
