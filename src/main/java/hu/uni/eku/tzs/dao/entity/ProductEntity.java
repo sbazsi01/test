@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 
-
 @Data
 @Builder
 @NoArgsConstructor
