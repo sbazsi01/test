@@ -157,7 +157,7 @@ class ProductManagerImplTest {
                     .productDescription(HARLEY_DAVIDSON_DESC)
                     .quantityInStock(7933)
                     .buyPrice(48.81)
-                    .MSRP(95.7)
+                    .msrp(95.7)
                     .build();
         }
 
@@ -178,7 +178,7 @@ class ProductManagerImplTest {
                     .productDescription(MOTO_GUZZI_DESC)
                     .quantityInStock(6625)
                     .buyPrice(68.99)
-                    .MSRP(118.94)
+                    .msrp(118.94)
                     .build();
         }
 
@@ -199,7 +199,7 @@ class ProductManagerImplTest {
                     .productDescription(ALPINE_RENAULT_DESC)
                     .quantityInStock(7305)
                     .buyPrice(98.58)
-                    .MSRP(214.3)
+                    .msrp(214.3)
                     .build();
         }
 
