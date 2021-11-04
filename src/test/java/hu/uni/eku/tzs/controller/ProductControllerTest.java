@@ -36,7 +36,7 @@ class ProductControllerTest {
     private ProductController controller;
 
     @Test
-    void readAllSanFrancisco() {
+    void readAllHarleyDavidson() {
         // given
         when(productManager.readAll()).thenReturn(List.of(TestDataProvider.getHarleyDavidsonProductModel()));
         when(productMapper.product2productDto(any())).thenReturn(TestDataProvider.getHarleyDavidsonProductDto());
@@ -49,7 +49,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void createProductSanFrancisco() throws ProductAlreadyExistsException {
+    void createProductHarleyDavidson() throws ProductAlreadyExistsException {
         // given
         ProductDto harleyDavidsonProductDto = TestDataProvider.getHarleyDavidsonProductDto();
         Product harleyDavidsonProductModel = TestDataProvider.getHarleyDavidsonProductModel();
@@ -76,7 +76,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void updateSanFrancisco() {
+    void updateHarleyDavidson() {
         // given
         ProductDto harleyDavidsonProductDto = TestDataProvider.getHarleyDavidsonProductDto();
         Product harleyDavidsonProductModel = TestDataProvider.getHarleyDavidsonProductModel();
@@ -93,7 +93,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void deleteFromQueryParamSanFrancisco() throws ProductNotFoundException {
+    void deleteFromQueryParamHarleyDavidson() throws ProductNotFoundException {
         // given
         Product harleyDavidsonProductModel = TestDataProvider.getHarleyDavidsonProductModel();
         when(productManager.readByProductCode(harleyDavidsonProductModel.getProductCode())).thenReturn(harleyDavidsonProductModel);

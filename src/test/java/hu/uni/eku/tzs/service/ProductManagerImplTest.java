@@ -32,7 +32,7 @@ class ProductManagerImplTest {
     private ProductManagerImpl service;
 
     @Test
-    void recordSanFranciscoProduct() throws ProductAlreadyExistsException {
+    void recordHarleyDavidsonProduct() throws ProductAlreadyExistsException {
         // given
         Product harleyDavidsonProductModel = TestDataProvider.getHarleyDavidsonProductModel();
         ProductEntity harleyDavidsonProductEntity = TestDataProvider.getHarleyDavidsonProductEntity();
@@ -73,7 +73,7 @@ class ProductManagerImplTest {
     }
 
     @Test
-    void readByProductCodeSanFrancisco() throws ProductNotFoundException {
+    void readByProductCodeHarleyDavidson() throws ProductNotFoundException {
         // given
         when(productRepository.findById(TestDataProvider.HARLEY_DAVIDSON_CODE))
                 .thenReturn(Optional.of(TestDataProvider.getHarleyDavidsonProductEntity()));
@@ -116,7 +116,7 @@ class ProductManagerImplTest {
     }
 
     @Test
-    void modifyProductSanFrancisco() {
+    void modifyProductHarleyDavidson() {
         // given
         Product harleyDavidsonProductModel = TestDataProvider.getHarleyDavidsonProductModel();
         ProductEntity harleyDavidsonProductEntity = TestDataProvider.getHarleyDavidsonProductEntity();
