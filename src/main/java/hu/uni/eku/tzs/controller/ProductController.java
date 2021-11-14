@@ -45,8 +45,8 @@ public class ProductController {
     }
 
     @ApiOperation("Read All By ProductLine")
-    @GetMapping(value = {"/line?={productLine}", ""})
-    public Collection<ProductDto> readAllProductsByProductLine(@PathVariable String productLine) {
+    @GetMapping(value = {"/line"})
+    public Collection<ProductDto> readAllProductsByProductLine(@RequestParam String productLine) {
         return productManager.readAllByProductLine(productLine)
                 .stream()
                 .map(productMapper::product2productDto)
