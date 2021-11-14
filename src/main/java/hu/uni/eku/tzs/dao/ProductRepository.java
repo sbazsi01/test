@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, String> {
 
-    @Query(value = "SELECT * FROM PRODUCTS WHERE productLine = ?1", nativeQuery = true)
+    @Query("SELECT p FROM products p WHERE p.productLine.productLine = ?1")
     Collection<ProductEntity> findAllByProductLine(String productLine);
 
 }
