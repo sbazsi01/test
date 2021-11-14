@@ -49,8 +49,8 @@ public class CustomerEntity {
     private String country;
 
     @Column
-    private int salesRepEmployeeNumber;
+    private Integer salesRepEmployeeNumber;
 
     @Column
-    private double creditLimit;
+    private Double creditLimit;
 }

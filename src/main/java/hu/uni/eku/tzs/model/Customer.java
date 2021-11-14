@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-    @Id
+
     private String customerNumber;
 
     private String customerName;
@@ -34,9 +31,7 @@ public class Customer {
 
     private String country;
 
-    private int salesRepEmployeeNumber;
+    private Integer salesRepEmployeeNumber;
 
-    private double creditLimit;
-
-
+    private Double creditLimit;
 }

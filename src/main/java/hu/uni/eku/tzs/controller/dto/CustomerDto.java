@@ -33,7 +33,7 @@ public class CustomerDto {
 
     private String country;
 
-    private int salesRepEmployeeNumber;
+    private Integer salesRepEmployeeNumber;
 
-    private double creditLimit;
+    private Double creditLimit;
 }

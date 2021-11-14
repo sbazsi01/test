@@ -33,8 +33,6 @@ public class CustomerManagerImpl implements CustomerManager {
                 customerEntity.getCountry(),
                 customerEntity.getSalesRepEmployeeNumber(),
                 customerEntity.getCreditLimit()
-
-
         );
     }
 
@@ -58,7 +56,7 @@ public class CustomerManagerImpl implements CustomerManager {
 
     @Override
     public Customer record(Customer customer) throws CustomerAlreadyExistsException {
-        if (CustomerRepository.findById(customer.getCustomerNumber()).isPresent()) {
+        if (customerRepository.findById(customer.getCustomerNumber()).isPresent()) {
             throw new CustomerAlreadyExistsException();
         }
         CustomerEntity customerEntity = customerRepository.save(
@@ -71,7 +69,8 @@ public class CustomerManagerImpl implements CustomerManager {
     public Customer readByCustomerNumber(String customerNumber) throws CustomerNotFoundException {
         Optional<CustomerEntity> entity = customerRepository.findById(customerNumber);
         if (entity.isEmpty()) {
-            throw new CustomerNotFoundException(String.format("Cannot find customer with customer number %s", customerNumber));
+            throw new CustomerNotFoundException(String.format("Cannot find customer"
+               + " with customer number %s", customerNumber));
         }
 
         return convertCustomerEntity2Model(entity.get());
@@ -79,7 +78,7 @@ public class CustomerManagerImpl implements CustomerManager {
 
     @Override
     public Collection<Customer> readAll() {
-        return CustomerRepository.findAll().stream().map(CustomerManagerImpl::convertCustomerEntity2Model)
+        return customerRepository.findAll().stream().map(CustomerManagerImpl::convertCustomerEntity2Model)
                 .collect(Collectors.toList());
     }
 
