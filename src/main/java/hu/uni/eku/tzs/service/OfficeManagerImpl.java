@@ -52,7 +52,7 @@ public class OfficeManagerImpl implements OfficeManager {
             throw new OfficeAlreadyExistsException();
         }
         OfficeEntity officeEntity = officeRepository.save(
-               convertOfficeModel2Entity(office)
+                convertOfficeModel2Entity(office)
         );
         return convertOfficeEntity2Model(officeEntity);
     }
