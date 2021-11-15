@@ -81,7 +81,7 @@ public class ProductManagerImpl implements ProductManager {
     public Product readByProductCode(String productCode) throws ProductNotFoundException {
         Optional<ProductEntity> entity = productRepository.findById(productCode);
         if (entity.isEmpty()) {
-            throw new ProductNotFoundException(String.format("Cannot find office with office code %s", productCode));
+            throw new ProductNotFoundException(String.format("Cannot find product with product code %s", productCode));
         }
 
         return convertProductEntity2Model(entity.get());
