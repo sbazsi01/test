@@ -66,7 +66,7 @@ public class CustomerController {
 
     @ApiOperation("Delete")
     @DeleteMapping(value = {"", "/"})
-    public void delete(@RequestParam String customerNumber) {
+    public void delete(@RequestParam Integer customerNumber) {
         try {
             customerManager.delete(customerManager.readByCustomerNumber(customerNumber));
         } catch (CustomerNotFoundException e) {
@@ -76,8 +76,8 @@ public class CustomerController {
 
     @ApiOperation("Delete")
     @DeleteMapping(value = {"/{customerCode}"})
-    public void deleteBasedOnPath(@PathVariable String customerCode) {
-        this.delete(customerCode);
+    public void deleteBasedOnPath(@PathVariable Integer customerNumber) {
+        this.delete(customerNumber);
     }
 
 }

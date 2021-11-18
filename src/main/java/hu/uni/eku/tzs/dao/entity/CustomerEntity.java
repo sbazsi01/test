@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 @Entity(name = "customers")
 public class CustomerEntity {
     @Id
-    private String customerNumber;
+    private Integer customerNumber;
 
     @Column
     private String customerName;

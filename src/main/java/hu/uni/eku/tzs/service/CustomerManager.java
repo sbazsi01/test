@@ -9,7 +9,7 @@ import java.util.Collection;
 public interface CustomerManager {
     Customer record(Customer customer) throws CustomerAlreadyExistsException;
 
-    Customer readByCustomerNumber(String customerNumber) throws CustomerNotFoundException;
+    Customer readByCustomerNumber(Integer customerNumber) throws CustomerNotFoundException;
 
     Collection<Customer> readAll();
 

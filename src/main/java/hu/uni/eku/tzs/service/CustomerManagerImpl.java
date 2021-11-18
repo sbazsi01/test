@@ -1,6 +1,8 @@
 package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.CustomerRepository;
+import hu.uni.eku.tzs.dao.EmployeeRepository;
+import hu.uni.eku.tzs.dao.OfficeRepository;
 import hu.uni.eku.tzs.dao.entity.CustomerEntity;
 import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
 import hu.uni.eku.tzs.dao.entity.OfficeEntity;
@@ -9,6 +11,7 @@ import hu.uni.eku.tzs.model.Employee;
 import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.service.exceptions.CustomerAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.CustomerNotFoundException;
+import hu.uni.eku.tzs.service.exceptions.EmployeeAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,10 @@ import java.util.stream.Collectors;
 public class CustomerManagerImpl implements CustomerManager {
 
     private final CustomerRepository customerRepository;
+
+    private final EmployeeRepository employeeRepository;
+
+    private final OfficeRepository officeRepository;
 
     private static Customer convertCustomerEntity2Model(CustomerEntity customerEntity) {
 
@@ -110,14 +117,66 @@ public class CustomerManagerImpl implements CustomerManager {
         if (customerRepository.findById(customer.getCustomerNumber()).isPresent()) {
             throw new CustomerAlreadyExistsException();
         }
+        EmployeeEntity employeeEntity = this.readOrRecordEmployee(customer.getSalesRepEmployeeNumber());
         CustomerEntity customerEntity = customerRepository.save(
-               convertCustomerModel2Entity(customer)
+            CustomerEntity.builder()
+            .customerNumber(customer.getCustomerNumber())
+            .customerName(customer.getCustomerName())
+            .contactLastName(customer.getContactLastName())
+            .contactFirstName(customer.getContactFirstName())
+            .phone(customer.getPhone())
+            .addressLine1(customer.getAddressLine1())
+            .addressLine2(customer.getAddressLine2())
+            .city(customer.getCity())
+            .state(customer.getState())
+            .postalCode(customer.getPostalCode())
+            .country(customer.getCountry())
+            .salesRepEmployeeNumber(convertEmployeeModel2Entity(customer.getSalesRepEmployeeNumber()))
+            .creditLimit(customer.getCreditLimit())
+            .build()
         );
         return convertCustomerEntity2Model(customerEntity);
     }
 
+    private EmployeeEntity readOrRecordEmployee(Employee employee) {
+        if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
+            return employeeRepository.findById(employee.getEmployeeNumber()).get();
+        }
+        return employeeRepository.save(
+            EmployeeEntity.builder()
+                .employeeNumber(employee.getEmployeeNumber())
+                .lastName(employee.getLastName())
+                .firstName(employee.getFirstName())
+                .extension(employee.getExtension())
+                .email(employee.getEmail())
+                .office(convertOfficeModel2Entity(employee.getOffice()))
+                .reportsTo(employee.getReportsTo())
+                .jobTitle(employee.getJobTitle())
+                .build()
+        );
+    }
+
+    private OfficeEntity readOrRecordOffice(Office office) {
+        if (officeRepository.findById(office.getOfficeCode()).isPresent()) {
+            return officeRepository.findById(office.getOfficeCode()).get();
+        }
+        return officeRepository.save(
+            OfficeEntity.builder()
+                .officeCode(office.getOfficeCode())
+                .addressLine1(office.getAddressLine1())
+                .addressLine2(office.getAddressLine2())
+                .city(office.getCity())
+                .country(office.getCountry())
+                .state(office.getState())
+                .phone(office.getPhone())
+                .postalCode(office.getPostalCode())
+                .territory(office.getTerritory())
+                .build()
+        );
+    }
+
     @Override
-    public Customer readByCustomerNumber(String customerNumber) throws CustomerNotFoundException {
+    public Customer readByCustomerNumber(Integer customerNumber) throws CustomerNotFoundException {
         Optional<CustomerEntity> entity = customerRepository.findById(customerNumber);
         if (entity.isEmpty()) {
             throw new CustomerNotFoundException(String.format("Cannot find customer"

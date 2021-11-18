@@ -43,9 +43,9 @@ class CustomerControllerTest {
     @Test
     void readAllHappyPath() {
         // given
-        when(customerManager.readAll()).thenReturn(List.of(TestDataProvider.get_102()));
-        when(customerMapper.customer2customerDto(any())).thenReturn(TestDataProvider.get_102Dto());
-        Collection<CustomerDto> expected = List.of(TestDataProvider.get_102Dto());
+        when(customerManager.readAll()).thenReturn(List.of(TestDataProvider.get_103()));
+        when(customerMapper.customer2customerDto(any())).thenReturn(TestDataProvider.get_103Dto());
+        Collection<CustomerDto> expected = List.of(TestDataProvider.get_103Dto());
         // when
         Collection<CustomerDto> actual = controller.readAllCustomers();
         //then
@@ -55,39 +55,39 @@ class CustomerControllerTest {
     @Test
     void createCustomerHappyPath() throws CustomerAlreadyExistsException {
         // given
-        Customer _102 = TestDataProvider.get_102();
-        CustomerDto _102Dto = TestDataProvider.get_102Dto();
-        when(customerMapper.customerDto2Customer(_102Dto)).thenReturn(_102);
-        when(customerManager.record(_102)).thenReturn(_102);
-        when(customerMapper.customer2customerDto(_102)).thenReturn(_102Dto);
+        Customer _103 = TestDataProvider.get_103();
+        CustomerDto _103Dto = TestDataProvider.get_103Dto();
+        when(customerMapper.customerDto2Customer(_103Dto)).thenReturn(_103);
+        when(customerManager.record(_103)).thenReturn(_103);
+        when(customerMapper.customer2customerDto(_103)).thenReturn(_103Dto);
         // when
-        CustomerDto actual = controller.create(_102Dto);
+        CustomerDto actual = controller.create(_103Dto);
         // then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(_102Dto);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(_103Dto);
     }
 
     @Test
     void createCustomerThrowsCustomerAlreadyExistsException() throws CustomerAlreadyExistsException {
         // given
-        Customer _102 = TestDataProvider.get_102();
-        CustomerDto _102Dto = TestDataProvider.get_102Dto();
-        when(customerMapper.customerDto2Customer(_102Dto)).thenReturn(_102);
-        when(customerManager.record(_102)).thenThrow(new CustomerAlreadyExistsException());
+        Customer _103 = TestDataProvider.get_103();
+        CustomerDto _103Dto = TestDataProvider.get_103Dto();
+        when(customerMapper.customerDto2Customer(_103Dto)).thenReturn(_103);
+        when(customerManager.record(_103)).thenThrow(new CustomerAlreadyExistsException());
         // when then
         assertThatThrownBy(() -> {
-            controller.create(_102Dto);
+            controller.create(_103Dto);
         }).isInstanceOf(ResponseStatusException.class);
     }
 
     @Test
     void updateHappyPath() {
         // given
-        CustomerDto requestDto = TestDataProvider.get_102Dto();
-        Customer _102 = TestDataProvider.get_102();
-        when(customerMapper.customerDto2Customer(requestDto)).thenReturn(_102);
-        when(customerManager.modify(_102)).thenReturn(_102);
-        when(customerMapper.customer2customerDto(_102)).thenReturn(requestDto);
-        CustomerDto expected = TestDataProvider.get_102Dto();
+        CustomerDto requestDto = TestDataProvider.get_103Dto();
+        Customer _103 = TestDataProvider.get_103();
+        when(customerMapper.customerDto2Customer(requestDto)).thenReturn(_103);
+        when(customerManager.modify(_103)).thenReturn(_103);
+        when(customerMapper.customer2customerDto(_103)).thenReturn(requestDto);
+        CustomerDto expected = TestDataProvider.get_103Dto();
         // when
         CustomerDto response = controller.update(requestDto);
         // then
@@ -99,18 +99,18 @@ class CustomerControllerTest {
     @Test
     void deleteFromQueryParamHappyPath() throws CustomerNotFoundException {
         // given
-        Customer _102 = TestDataProvider.get_102();
-        when(customerManager.readByCustomerNumber(TestDataProvider._102)).thenReturn(_102);
-        doNothing().when(customerManager).delete(_102);
+        Customer _103 = TestDataProvider.get_103();
+        when(customerManager.readByCustomerNumber(TestDataProvider._103)).thenReturn(_103);
+        doNothing().when(customerManager).delete(_103);
         // when
-        controller.delete(TestDataProvider._102);
+        controller.delete(TestDataProvider._103);
         // then is not necessary, mock are checked by default
     }
 
     @Test
     void deleteFromQueryParamWhenCustomerNotFound() throws CustomerNotFoundException {
         // given
-        final String notFoundCustomerNumber = TestDataProvider._102;
+        final Integer notFoundCustomerNumber = TestDataProvider._103;
         doThrow(new CustomerNotFoundException()).when(customerManager).readByCustomerNumber(notFoundCustomerNumber);
         // when then
         assertThatThrownBy(() -> controller.delete(notFoundCustomerNumber))
@@ -166,10 +166,10 @@ class CustomerControllerTest {
         }
 
 
-        public static final String _102 = "102";
+        public static final Integer _103 = 103;
 
-        public static Customer get_102() {
-            return new Customer(_102, "Atelier graphique",
+        public static Customer get_103() {
+            return new Customer(_103, "Atelier graphique",
                 "Schmitt",
                 "Carine ",
                 "40.32.2555",
@@ -183,9 +183,9 @@ class CustomerControllerTest {
                 21000.0);
         }
 
-        public static CustomerDto get_102Dto() {
+        public static CustomerDto get_103Dto() {
             return CustomerDto.builder()
-                .customerNumber(_102)
+                .customerNumber(_103)
                 .customerName("Atelier graphique")
                 .contactLastName("Schmitt")
                 .contactFirstName("Carine ")
