@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Data
 @Builder
@@ -48,8 +50,9 @@ public class CustomerEntity {
     @Column
     private String country;
 
-    @Column
-    private Integer salesRepEmployeeNumber;
+    @ManyToOne
+    @JoinColumn(name = "salesRepEmployeeNumber")
+    private EmployeeEntity salesRepEmployeeNumber;
 
     @Column
     private Double creditLimit;
