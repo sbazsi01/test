@@ -25,7 +25,6 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
     }
 
     protected static Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
-
         return new Employee(
             employeeEntity.getEmployeeNumber(),
             employeeEntity.getLastName(),

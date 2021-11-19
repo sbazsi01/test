@@ -38,6 +38,7 @@ public class EmployeeEntity {
     private OfficeEntity office;
 
     @Column(name = "reportsTo")
+
     private Integer reportsTo;
 
     @Column(name = "jobTitle", nullable = false, length = 50)
