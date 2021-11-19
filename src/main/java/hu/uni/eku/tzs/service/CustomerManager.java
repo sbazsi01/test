@@ -11,7 +11,7 @@ public interface CustomerManager {
 
     Customer readByCustomerNumber(Integer customerNumber) throws CustomerNotFoundException;
 
-    Collection<Customer> readAll();
+    Collection<Customer> readAllCustomers();
 
     Customer modify(Customer customer);
 

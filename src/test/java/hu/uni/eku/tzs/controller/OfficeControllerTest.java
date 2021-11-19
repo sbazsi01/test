@@ -36,7 +36,7 @@ class OfficeControllerTest {
     @Test
     void readAllSanFrancisco() {
         // given
-        when(officeManager.readAll()).thenReturn(List.of(TestDataProvider.getSanFranciscoOfficeModel()));
+        when(officeManager.readAllOffices()).thenReturn(List.of(TestDataProvider.getSanFranciscoOfficeModel()));
         when(officeMapper.office2officeDto(any())).thenReturn(TestDataProvider.getSanFranciscoOfficeDto());
         // when
         Collection<OfficeDto> expected = List.of(TestDataProvider.getSanFranciscoOfficeDto());

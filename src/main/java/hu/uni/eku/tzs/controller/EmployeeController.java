@@ -38,7 +38,7 @@ public class EmployeeController {
     @ApiOperation("Read All")
     @GetMapping(value = {"/", ""})
     public Collection<EmployeeDto> readAllEmployees() {
-        return employeeManager.readAll()
+        return employeeManager.readAllEmployees()
             .stream()
             .map(employeeMapper::employee2employeeDto)
             .collect(Collectors.toList());

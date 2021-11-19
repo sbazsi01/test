@@ -2,6 +2,7 @@ package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.EmployeeRepository;
 import hu.uni.eku.tzs.dao.CustomerRepository;
+import hu.uni.eku.tzs.dao.OfficeRepository;
 import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
 import hu.uni.eku.tzs.dao.entity.CustomerEntity;
 import hu.uni.eku.tzs.dao.entity.OfficeEntity;
@@ -34,8 +35,12 @@ class CustomerManagerImplTest {
     @Mock
     EmployeeRepository employeeRepository;
 
+    @Mock
+    OfficeRepository officeRepository;
+
     @InjectMocks
     CustomerManagerImpl service;
+
 
     @Test
     void recordCustomerHappyPath() throws CustomerAlreadyExistsException {
@@ -60,10 +65,14 @@ class CustomerManagerImplTest {
         EmployeeEntity _1166Entity = TestDataProvider.get_1166Entity();
         Customer _112 = TestDataProvider.get_112();
         CustomerEntity _112Entity = TestDataProvider.get_112Entity();
+        Office SanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
+        OfficeEntity SanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
         when(customerRepository.findById(TestDataProvider._112)).thenReturn(Optional.empty());
+        when(officeRepository.findById(SanFrancisco.getOfficeCode())).thenReturn(Optional.empty());
         when(employeeRepository.findById(_1166.getEmployeeNumber())).thenReturn(Optional.empty());
         when(employeeRepository.save(_1166Entity)).thenReturn(_1166Entity);
         when(customerRepository.save(_112Entity)).thenReturn(_112Entity);
+        when(officeRepository.save(SanFranciscoEntity)).thenReturn(SanFranciscoEntity);
         // when
         Customer actual = service.record(_112);
         // then
@@ -84,7 +93,7 @@ class CustomerManagerImplTest {
     }
 
     @Test
-    void readByIsbnHappyPath() throws CustomerNotFoundException {
+    void readByCustomerNumberHappyPath() throws CustomerNotFoundException {
         // given
         when(customerRepository.findById(TestDataProvider._103))
             .thenReturn(Optional.of(TestDataProvider.get_103Entity()));
@@ -96,7 +105,7 @@ class CustomerManagerImplTest {
     }
 
     @Test
-    void readByIsbnCustomerNotFoundException() {
+    void readByCustomerNumberCustomerNotFoundException() {
         // given
         when(customerRepository.findById(TestDataProvider.UNKNOWN_CUSTOMERNUMBER)).thenReturn(Optional.empty());
         // when then
@@ -119,12 +128,11 @@ class CustomerManagerImplTest {
         );
         when(customerRepository.findAll()).thenReturn(customerEntities);
         // when
-        Collection<Customer> actualCustomers = service.readAll();
+        Collection<Customer> actualCustomers = service.readAllCustomers();
         // then
         assertThat(actualCustomers)
             .usingRecursiveComparison()
             .isEqualTo(expectedCustomers);
-//            .containsExactlyInAnyOrderElementsOf(expectedCustomers);
     }
 
     @Test
@@ -142,17 +150,16 @@ class CustomerManagerImplTest {
     }
 
     private static class TestDataProvider {
-        //(103,'Atelier graphique','Schmitt','Carine ','40.32.2555','54, rue Royale',NULL,'Nantes',NULL,'44000','France',1370,21000),
 
-        //(1370,'Hernandez','Gerard','x2028','ghernande@classicmodelcars.com','4',1102,'Sales Rep')
-        //(1166,'Thompson','Leslie','x4065','lthompson@classicmodelcars.com','1',1143,'Sales Rep'),
-        
         public static final Integer UNKNOWN_CUSTOMERNUMBER = 9999;
         public static final Integer _1166 = 1166;
         public static final Integer _1370 = 1370;
 
         public static final Integer _103 = 103;
         public static final Integer _112 = 112;
+
+        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
+        public static String OFFICE_CODE_PARIS = "4";
 
         public static Customer get_103() {
             return new Customer(_103, "Atelier graphique",
@@ -168,7 +175,7 @@ class CustomerManagerImplTest {
                 get_1370(),
                 21000.0);
         }
-        // (112,'Signal Gift Stores','King','Jean','7025551838','8489 Strong St.',NULL,'Las Vegas','NV','83030','USA',1166,71800)
+
         public static Customer get_112() {
             return new Customer(_112, "Signal Gift Stores",
                 "King",
@@ -270,9 +277,6 @@ class CustomerManagerImplTest {
                 .jobTitle("Sales Rep")
                 .build();
         }
-
-        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
-        public static String OFFICE_CODE_PARIS = "4";
 
         public static Office getSanFranciscoOfficeModel() {
             return new Office(

@@ -38,7 +38,7 @@ class EmployeeControllerTest {
     @Test
     void readAllHappyPath() {
         // given
-        when(employeeManager.readAll()).thenReturn(List.of(TestDataProvider.get_1056()));
+        when(employeeManager.readAllEmployees()).thenReturn(List.of(TestDataProvider.get_1056()));
         when(employeeMapper.employee2employeeDto(any())).thenReturn(TestDataProvider.get_1056Dto());
         Collection<EmployeeDto> expected = List.of(TestDataProvider.get_1056Dto());
         // when

@@ -116,12 +116,11 @@ class EmployeeManagerImplTest {
         );
         when(employeeRepository.findAll()).thenReturn(employeeEntities);
         // when
-        Collection<Employee> actualEmployees = service.readAll();
+        Collection<Employee> actualEmployees = service.readAllEmployees();
         // then
         assertThat(actualEmployees)
             .usingRecursiveComparison()
             .isEqualTo(expectedEmployees);
-//            .containsExactlyInAnyOrderElementsOf(expectedEmployees);
     }
 
     @Test

@@ -39,7 +39,7 @@ public class OfficeController {
     @ApiOperation("Read All")
     @GetMapping(value = {"/", ""})
     public Collection<OfficeDto> readAllOffices() {
-        return officeManager.readAll()
+        return officeManager.readAllOffices()
             .stream()
             .map(officeMapper::office2officeDto)
             .collect(Collectors.toList());

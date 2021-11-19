@@ -5,14 +5,9 @@ import hu.uni.eku.tzs.dao.EmployeeRepository;
 import hu.uni.eku.tzs.dao.OfficeRepository;
 import hu.uni.eku.tzs.dao.entity.CustomerEntity;
 import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
-import hu.uni.eku.tzs.dao.entity.OfficeEntity;
 import hu.uni.eku.tzs.model.Customer;
-import hu.uni.eku.tzs.model.Employee;
-import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.service.exceptions.CustomerAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.CustomerNotFoundException;
-import hu.uni.eku.tzs.service.exceptions.EmployeeAlreadyExistsException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -20,17 +15,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class CustomerManagerImpl implements CustomerManager {
+public class CustomerManagerImpl extends EmployeeManagerImpl implements CustomerManager  {
 
     private final CustomerRepository customerRepository;
 
-    private final EmployeeRepository employeeRepository;
-
-    private final OfficeRepository officeRepository;
+    public CustomerManagerImpl(EmployeeRepository employeeRepository, OfficeRepository officeRepository,
+                               CustomerRepository customerRepository) {
+        super(employeeRepository, officeRepository);
+        this.customerRepository = customerRepository;
+    }
 
     private static Customer convertCustomerEntity2Model(CustomerEntity customerEntity) {
-
         return new Customer(
                 customerEntity.getCustomerNumber(),
                 customerEntity.getCustomerName(),
@@ -43,26 +38,7 @@ public class CustomerManagerImpl implements CustomerManager {
                 customerEntity.getState(),
                 customerEntity.getPostalCode(),
                 customerEntity.getCountry(),
-            new Employee(
-                customerEntity.getSalesRepEmployeeNumber().getEmployeeNumber(),
-                customerEntity.getSalesRepEmployeeNumber().getLastName(),
-                customerEntity.getSalesRepEmployeeNumber().getFirstName(),
-                customerEntity.getSalesRepEmployeeNumber().getExtension(),
-                customerEntity.getSalesRepEmployeeNumber().getEmail(),
-                new Office(
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getOfficeCode(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getCity(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getPhone(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getAddressLine1(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getAddressLine2(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getState(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getCountry(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getPostalCode(),
-                    customerEntity.getSalesRepEmployeeNumber().getOffice().getTerritory()
-                ),
-                customerEntity.getSalesRepEmployeeNumber().getReportsTo(),
-                customerEntity.getSalesRepEmployeeNumber().getJobTitle()
-            ),
+                EmployeeManagerImpl.convertEmployeeEntity2Model(customerEntity.getSalesRepEmployeeNumber()),
                 customerEntity.getCreditLimit()
         );
     }
@@ -84,33 +60,6 @@ public class CustomerManagerImpl implements CustomerManager {
                 .creditLimit(customer.getCreditLimit())
                 .build();
     }
-    
-    private static EmployeeEntity convertEmployeeModel2Entity(Employee employee) {
-        return EmployeeEntity.builder()
-            .employeeNumber(employee.getEmployeeNumber())
-            .lastName(employee.getLastName())
-            .firstName(employee.getFirstName())
-            .extension(employee.getExtension())
-            .email(employee.getEmail())
-            .office(convertOfficeModel2Entity(employee.getOffice()))
-            .reportsTo(employee.getReportsTo())
-            .jobTitle(employee.getJobTitle())
-            .build();
-    }
-
-    private static OfficeEntity convertOfficeModel2Entity(Office office) {
-        return OfficeEntity.builder()
-            .officeCode(office.getOfficeCode())
-            .addressLine1(office.getAddressLine1())
-            .addressLine2(office.getAddressLine2())
-            .city(office.getCity())
-            .country(office.getCountry())
-            .state(office.getState())
-            .phone(office.getPhone())
-            .postalCode(office.getPostalCode())
-            .territory(office.getTerritory())
-            .build();
-    }
 
     @Override
     public Customer record(Customer customer) throws CustomerAlreadyExistsException {
@@ -131,48 +80,11 @@ public class CustomerManagerImpl implements CustomerManager {
             .state(customer.getState())
             .postalCode(customer.getPostalCode())
             .country(customer.getCountry())
-            .salesRepEmployeeNumber(convertEmployeeModel2Entity(customer.getSalesRepEmployeeNumber()))
+            .salesRepEmployeeNumber(employeeEntity)
             .creditLimit(customer.getCreditLimit())
             .build()
         );
         return convertCustomerEntity2Model(customerEntity);
-    }
-
-    private EmployeeEntity readOrRecordEmployee(Employee employee) {
-        if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
-            return employeeRepository.findById(employee.getEmployeeNumber()).get();
-        }
-        return employeeRepository.save(
-            EmployeeEntity.builder()
-                .employeeNumber(employee.getEmployeeNumber())
-                .lastName(employee.getLastName())
-                .firstName(employee.getFirstName())
-                .extension(employee.getExtension())
-                .email(employee.getEmail())
-                .office(convertOfficeModel2Entity(employee.getOffice()))
-                .reportsTo(employee.getReportsTo())
-                .jobTitle(employee.getJobTitle())
-                .build()
-        );
-    }
-
-    private OfficeEntity readOrRecordOffice(Office office) {
-        if (officeRepository.findById(office.getOfficeCode()).isPresent()) {
-            return officeRepository.findById(office.getOfficeCode()).get();
-        }
-        return officeRepository.save(
-            OfficeEntity.builder()
-                .officeCode(office.getOfficeCode())
-                .addressLine1(office.getAddressLine1())
-                .addressLine2(office.getAddressLine2())
-                .city(office.getCity())
-                .country(office.getCountry())
-                .state(office.getState())
-                .phone(office.getPhone())
-                .postalCode(office.getPostalCode())
-                .territory(office.getTerritory())
-                .build()
-        );
     }
 
     @Override
@@ -187,7 +99,7 @@ public class CustomerManagerImpl implements CustomerManager {
     }
 
     @Override
-    public Collection<Customer> readAll() {
+    public Collection<Customer> readAllCustomers() {
         return customerRepository.findAll().stream().map(CustomerManagerImpl::convertCustomerEntity2Model)
                 .collect(Collectors.toList());
     }

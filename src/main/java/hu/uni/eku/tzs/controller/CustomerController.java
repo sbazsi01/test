@@ -38,7 +38,7 @@ public class CustomerController {
     @ApiOperation("Read All")
     @GetMapping(value = {"/", ""})
     public Collection<CustomerDto> readAllCustomers() {
-        return customerManager.readAll()
+        return customerManager.readAllCustomers()
             .stream()
             .map(customerMapper::customer2customerDto)
             .collect(Collectors.toList());

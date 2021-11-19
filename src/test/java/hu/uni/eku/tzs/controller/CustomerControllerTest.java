@@ -43,7 +43,7 @@ class CustomerControllerTest {
     @Test
     void readAllHappyPath() {
         // given
-        when(customerManager.readAll()).thenReturn(List.of(TestDataProvider.get_103()));
+        when(customerManager.readAllCustomers()).thenReturn(List.of(TestDataProvider.get_103()));
         when(customerMapper.customer2customerDto(any())).thenReturn(TestDataProvider.get_103Dto());
         Collection<CustomerDto> expected = List.of(TestDataProvider.get_103Dto());
         // when
@@ -118,10 +118,6 @@ class CustomerControllerTest {
     }
 
     private static class TestDataProvider {
-//(103,'Atelier graphique','Schmitt','Carine ','40.32.2555','54, rue Royale',NULL,'Nantes',NULL,'44000','France',1370,21000),
-// (112,'Signal Gift Stores','King','Jean','7025551838','8489 Strong St.',NULL,'Las Vegas','NV','83030','USA',1166,71800)
-        //(1370,'Hernandez','Gerard','x2028','ghernande@classicmodelcars.com','4',1102,'Sales Rep')
-
 
         public static final Integer _1370_EMPLOYEENUMBER = 1370;
 
@@ -145,7 +141,6 @@ class CustomerControllerTest {
 
         public static String OFFICE_CODE_PARIS = "4";
 
-        //('4','Paris','+33 14 723 4404','43 Rue Jouffroy D\'abbans',NULL,NULL,'France','75017','EMEA')
         public static Office getParisOfficeModel() {
             return new Office(OFFICE_CODE_PARIS, "Paris", "+33 14 723 4404", "43 Rue Jouffroy D\\'abbans",
                 null, null, "France", "75017", "EMEA");
@@ -164,7 +159,6 @@ class CustomerControllerTest {
                 .territory("EMEA")
                 .build();
         }
-
 
         public static final Integer _103 = 103;
 

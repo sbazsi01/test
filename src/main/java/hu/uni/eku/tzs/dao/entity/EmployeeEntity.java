@@ -37,9 +37,7 @@ public class EmployeeEntity {
     @JoinColumn(name = "officeCode", nullable = false)
     private OfficeEntity office;
 
-    /*  @ManyToOne
-    @JoinColumn(name = "reportsTo")
-    private EmployeeEntity reportsTo;*/
+    @Column(name = "reportsTo")
     private Integer reportsTo;
 
     @Column(name = "jobTitle", nullable = false, length = 50)

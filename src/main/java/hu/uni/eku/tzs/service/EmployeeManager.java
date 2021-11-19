@@ -11,7 +11,7 @@ public interface EmployeeManager {
 
     Employee readByEmployeeNumber(Integer employeeNumber) throws EmployeeNotFoundException;
 
-    Collection<Employee> readAll();
+    Collection<Employee> readAllEmployees();
 
     Employee modify(Employee employee);
 
