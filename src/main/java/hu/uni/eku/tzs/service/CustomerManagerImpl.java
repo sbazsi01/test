@@ -6,6 +6,7 @@ import hu.uni.eku.tzs.dao.OfficeRepository;
 import hu.uni.eku.tzs.dao.entity.CustomerEntity;
 import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
 import hu.uni.eku.tzs.model.Customer;
+import hu.uni.eku.tzs.model.Employee;
 import hu.uni.eku.tzs.service.exceptions.CustomerAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,10 @@ public class CustomerManagerImpl extends EmployeeManagerImpl implements Customer
     }
 
     private static Customer convertCustomerEntity2Model(CustomerEntity customerEntity) {
+        Employee employee = null;
+        if (customerEntity.getSalesRepEmployeeNumber() != null) {
+            employee = EmployeeManagerImpl.convertEmployeeEntity2Model(customerEntity.getSalesRepEmployeeNumber());
+        }
         return new Customer(
                 customerEntity.getCustomerNumber(),
                 customerEntity.getCustomerName(),
@@ -38,7 +43,7 @@ public class CustomerManagerImpl extends EmployeeManagerImpl implements Customer
                 customerEntity.getState(),
                 customerEntity.getPostalCode(),
                 customerEntity.getCountry(),
-                EmployeeManagerImpl.convertEmployeeEntity2Model(customerEntity.getSalesRepEmployeeNumber()),
+                employee,
                 customerEntity.getCreditLimit()
         );
     }
