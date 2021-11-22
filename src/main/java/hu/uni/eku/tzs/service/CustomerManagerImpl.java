@@ -26,7 +26,7 @@ public class CustomerManagerImpl extends EmployeeManagerImpl implements Customer
         this.customerRepository = customerRepository;
     }
 
-    private static Customer convertCustomerEntity2Model(CustomerEntity customerEntity) {
+    protected static Customer convertCustomerEntity2Model(CustomerEntity customerEntity) {
         Employee employee = null;
         if (customerEntity.getSalesRepEmployeeNumber() != null) {
             employee = EmployeeManagerImpl.convertEmployeeEntity2Model(customerEntity.getSalesRepEmployeeNumber());
@@ -48,7 +48,7 @@ public class CustomerManagerImpl extends EmployeeManagerImpl implements Customer
         );
     }
 
-    private static CustomerEntity convertCustomerModel2Entity(Customer customer) {
+    protected static CustomerEntity convertCustomerModel2Entity(Customer customer) {
         return CustomerEntity.builder()
                 .customerNumber(customer.getCustomerNumber())
                 .customerName(customer.getCustomerName())
