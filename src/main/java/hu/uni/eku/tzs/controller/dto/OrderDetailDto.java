@@ -18,16 +18,11 @@ public class OrderDetailDto {
     @Pattern(regexp = "^[0-9]+", message = "invalid order number")
     private Integer orderNumber;
 
-    @Valid
-    private String orderDate;
+    private String productCode;
 
-    private String requiredDate;
+    private Integer quantityOrdered;
 
-    private String shippedDate;
+    private Double priceEach;
 
-    private String status;
-
-    private String comments;
-
-    private Integer customerNumber;
+    private short orderLineNumber;
 }
