@@ -1,4 +1,4 @@
-/*package hu.uni.eku.tzs.model;
+package hu.uni.eku.tzs.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +23,3 @@ public class OrderDetail {
 
     private short orderLineNumber;
 }
-*/
