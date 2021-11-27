@@ -22,16 +22,12 @@ import java.io.Serializable;
 public class OrderDetailEntity implements Serializable {
 
     @Id
-    @OneToOne
-    @JoinColumn(name = "orderNumber")
     @MapsId
-    private OrderEntity order;
+    private Integer orderNumber;
 
     @Id
-    @OneToOne
-    @JoinColumn(name = "productCode")
     @MapsId
-    private ProductEntity product;
+    private Integer productNumber;
 
     @Column(name = "quantityOrdered", nullable = false)
     private int quantityOrdered;
