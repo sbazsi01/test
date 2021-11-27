@@ -21,5 +21,5 @@ public class OrderDetail {
 
     private Double priceEach;
 
-    private int orderLineNumber;
+    private Integer orderLineNumber;
 }
