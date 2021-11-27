@@ -27,7 +27,7 @@ public class OrderDetailEntity implements Serializable {
 
     @Id
     @MapsId
-    private Integer productNumber;
+    private String productCode;
 
     @Column(name = "quantityOrdered", nullable = false)
     private int quantityOrdered;
