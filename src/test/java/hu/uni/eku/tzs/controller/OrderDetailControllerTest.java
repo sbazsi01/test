@@ -1,13 +1,11 @@
 package hu.uni.eku.tzs.controller;
 
-import hu.uni.eku.tzs.controller.dto.AuthorDto;
-import hu.uni.eku.tzs.controller.dto.BookDto;
-import hu.uni.eku.tzs.controller.dto.BookMapper;
-import hu.uni.eku.tzs.model.Author;
-import hu.uni.eku.tzs.model.Book;
-import hu.uni.eku.tzs.service.BookManager;
-import hu.uni.eku.tzs.service.exceptions.BookAlreadyExistsException;
-import hu.uni.eku.tzs.service.exceptions.BookNotFoundException;
+import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
+import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
+import hu.uni.eku.tzs.model.OrderDetail;
+import hu.uni.eku.tzs.service.OrderDetailManager;
+import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
+import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,22 +27,22 @@ import static org.mockito.Mockito.when;
 class OrderDetailControllerTest {
 
     @Mock
-    private BookManager bookManager;
+    private OrderDetailManager orderDetailManager;
 
     @Mock
-    private BookMapper bookMapper;
+    private OrderDetailMapper orderDetailMapper;
 
     @InjectMocks
-    private BookController controller;
+    private OrderDetailController controller;
 
     @Test
     void readAllHappyPath() {
         // given
-        when(bookManager.readAll()).thenReturn(List.of(TestDataProvider.getDune()));
-        when(bookMapper.book2bookDto(any())).thenReturn(TestDataProvider.getDuneDto());
-        Collection<BookDto> expected = List.of(TestDataProvider.getDuneDto());
+        when(orderDetailManager.readAll()).thenReturn(List.of(TestDataProvider.testOrderDetail()));
+        when(orderDetailMapper.orderDetail2orderDetailDto(any())).thenReturn(TestDataProvider.testOrderDetailDto());
+        Collection<OrderDetailDto> expected = List.of(TestDataProvider.testOrderDetailDto());
         // when
-        Collection<BookDto> actual = controller.readAllBooks();
+        Collection<OrderDetailDto> actual = controller.readAllOrderDetails();
         //then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 
@@ -52,26 +50,28 @@ class OrderDetailControllerTest {
     }
 
     @Test
-    void createBookHappyPath() throws BookAlreadyExistsException {
+    void createOrderDetailHappyPath() throws OrderDetailAlreadyExistsException {
+
         // given
-        Book dune = TestDataProvider.getDune();
-        BookDto duneDto = TestDataProvider.getDuneDto();
-        when(bookMapper.bookDto2Book(duneDto)).thenReturn(dune);
-        when(bookManager.record(dune)).thenReturn(dune);
-        when(bookMapper.book2bookDto(dune)).thenReturn(duneDto);
+        OrderDetail test = TestDataProvider.testOrderDetail();
+        OrderDetailDto testDto = TestDataProvider.testOrderDetailDto();
+        when(orderDetailMapper.orderDetailDto2orderDetail(testDto)).thenReturn(test);
+        when(orderDetailManager.record(test)).thenReturn(test);
+        when(orderDetailMapper.orderDetail2orderDetailDto(test)).thenReturn(testDto);
         // when
-        BookDto actual = controller.create(duneDto);
+        OrderDetailDto actual = controller.create(testDto);
         // then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(duneDto);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(testDto);
     }
 
     @Test
-    void createBookThrowsBookAlreadyExistsException() throws BookAlreadyExistsException {
+    void createOrderDetailThrowsOrderDetailAlreadyExistsException() throws OrderDetailAlreadyExistsException {
+
         // given
-        Book dune = TestDataProvider.getDune();
-        BookDto duneDto = TestDataProvider.getDuneDto();
-        when(bookMapper.bookDto2Book(duneDto)).thenReturn(dune);
-        when(bookManager.record(dune)).thenThrow(new BookAlreadyExistsException());
+        OrderDetail test = TestDataProvider.testOrderDetail();
+        OrderDetailDto duneDto = TestDataProvider.testOrderDetailDto();
+        when(orderDetailMapper.orderDetailDto2orderDetail(duneDto)).thenReturn(test);
+        when(orderDetailManager.record(test)).thenThrow(new OrderDetailAlreadyExistsException());
         // when then
         assertThatThrownBy(() -> {
             controller.create(duneDto);
@@ -80,15 +80,16 @@ class OrderDetailControllerTest {
 
     @Test
     void updateHappyPath() {
+
         // given
-        BookDto requestDto = TestDataProvider.getDuneDto();
-        Book dune = TestDataProvider.getDune();
-        when(bookMapper.bookDto2Book(requestDto)).thenReturn(dune);
-        when(bookManager.modify(dune)).thenReturn(dune);
-        when(bookMapper.book2bookDto(dune)).thenReturn(requestDto);
-        BookDto expected = TestDataProvider.getDuneDto();
+        OrderDetailDto requestDto = TestDataProvider.testOrderDetailDto();
+        OrderDetail dune = TestDataProvider.testOrderDetail();
+        when(orderDetailMapper.orderDetailDto2orderDetail(requestDto)).thenReturn(dune);
+        when(orderDetailManager.modify(dune)).thenReturn(dune);
+        when(orderDetailMapper.orderDetail2orderDetailDto(dune)).thenReturn(requestDto);
+        OrderDetailDto expected = TestDataProvider.testOrderDetailDto();
         // when
-        BookDto response = controller.update(requestDto);
+        OrderDetailDto response = controller.update(requestDto);
         // then
         assertThat(response).usingRecursiveComparison()
             .isEqualTo(expected);
@@ -96,57 +97,34 @@ class OrderDetailControllerTest {
 
 
     @Test
-    void deleteFromQueryParamHappyPath() throws BookNotFoundException {
+    void deleteFromQueryParamHappyPath() throws OrderDetailNotFoundException {
         // given
-        Book dune = TestDataProvider.getDune();
-        when(bookManager.readByIsbn(TestDataProvider.DUNE_ISBN)).thenReturn(dune);
-        doNothing().when(bookManager).delete(dune);
+        OrderDetail test = TestDataProvider.testOrderDetail();
+        when(orderDetailManager.readByOrderNumber(TestDataProvider.testOrderDetail().getOrderNumber())).thenReturn(test);
+        doNothing().when(orderDetailManager).delete(test);
         // when
-        controller.delete(TestDataProvider.DUNE_ISBN);
+        controller.delete(TestDataProvider.testOrderDetail().getOrderNumber());
         // then is not necessary, mock are checked by default
     }
 
     @Test
-    void deleteFromQueryParamWhenBookNotFound() throws BookNotFoundException {
+    void deleteFromQueryParamWhenOrderDetailNotFound() throws OrderDetailNotFoundException {
         // given
-        final String notFoundBookIsbn = TestDataProvider.DUNE_ISBN;
-        doThrow(new BookNotFoundException()).when(bookManager).readByIsbn(notFoundBookIsbn);
-//        These two lines mean the same.
-//        doThrow(new BookNotFoundException()).when(bookManager).readByIsbn(notFoundBookIsbn);
-//        when(bookManager.readByIsbn(notFoundBookIsbn)).thenThrow(new BookNotFoundException());
+        final Integer notFoundOrderDetailOrderNumber = TestDataProvider.testOrderDetail().getOrderNumber();
+        doThrow(new OrderDetailNotFoundException()).when(orderDetailManager.readByOrderNumber(notFoundOrderDetailOrderNumber));
         // when then
-        assertThatThrownBy(() -> controller.delete(notFoundBookIsbn))
+        assertThatThrownBy(() -> controller.delete(notFoundOrderDetailOrderNumber))
             .isInstanceOf(ResponseStatusException.class);
     }
 
     private static class TestDataProvider {
-
-        public static final String DUNE_ISBN = "1-0000-000";
-
-        public static Author getFrankHerbertModel() {
-            return new Author(0, "Frank", "Herbert", "American");
+        
+        public static OrderDetail testOrderDetail() {
+            return new OrderDetail(1,"1",1,1.0,1);
         }
 
-        public static AuthorDto getFrankHerbertDto() {
-            return AuthorDto.builder()
-                .id(0)
-                .firstName("Frank")
-                .lastName("Herbert")
-                .nationality("American")
-                .build();
-        }
-
-        public static Book getDune() {
-            return new Book(DUNE_ISBN, getFrankHerbertModel(), "Dune", "English");
-        }
-
-        public static BookDto getDuneDto() {
-            return BookDto.builder()
-                .isbn(DUNE_ISBN)
-                .author(getFrankHerbertDto())
-                .title("Dune")
-                .language("English")
-                .build();
+        public static OrderDetailDto testOrderDetailDto() {
+            return new OrderDetailDto(1,"1",1,1.0,1);
         }
     }
 

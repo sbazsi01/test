@@ -24,5 +24,5 @@ public class OrderDetailDto {
 
     private Double priceEach;
 
-    private short orderLineNumber;
+    private int orderLineNumber;
 }
