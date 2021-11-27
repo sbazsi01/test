@@ -1,13 +1,10 @@
 package hu.uni.eku.tzs.service;
 
-import hu.uni.eku.tzs.dao.AuthorRepository;
-import hu.uni.eku.tzs.dao.BookRepository;
-import hu.uni.eku.tzs.dao.entity.AuthorEntity;
-import hu.uni.eku.tzs.dao.entity.BookEntity;
-import hu.uni.eku.tzs.model.Author;
-import hu.uni.eku.tzs.model.Book;
-import hu.uni.eku.tzs.service.exceptions.BookAlreadyExistsException;
-import hu.uni.eku.tzs.service.exceptions.BookNotFoundException;
+import hu.uni.eku.tzs.dao.OrderDetailRepository;
+import hu.uni.eku.tzs.dao.entity.OrderDetailEntity;
+import hu.uni.eku.tzs.model.OrderDetail;
+import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
+import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,113 +24,90 @@ import static org.mockito.Mockito.when;
 class OrderDetailManagerImplTest {
 
     @Mock
-    BookRepository bookRepository;
-
-    @Mock
-    AuthorRepository authorRepository;
+    OrderDetailRepository orderDetailRepository;
 
     @InjectMocks
-    BookManagerImpl service;
+    OrderDetailManagerImpl service;
 
     @Test
-    void recordBookHappyPath() throws BookAlreadyExistsException {
+    void recordOrderDetailHappyPath() throws OrderDetailAlreadyExistsException {
+
         // given
-        Author douglasAdams = TestDataProvider.getDouglasAdamsModel();
-        AuthorEntity douglasAddamsEntity = TestDataProvider.getDouglasAdamsEntity();
-        Book hg2g = TestDataProvider.getHitchhikersGuide();
-        BookEntity hg2gEntity = TestDataProvider.getHitchhikersGuideEntity();
-        when(bookRepository.findById(any())).thenReturn(Optional.empty());
-        when(authorRepository.findById(douglasAdams.getId())).thenReturn(Optional.ofNullable(douglasAddamsEntity));
-        when(bookRepository.save(any())).thenReturn(hg2gEntity);
+        OrderDetail o66 = TestDataProvider.getOrder66();
+        OrderDetailEntity entity = TestDataProvider.getOrder66Entity();
+        when(orderDetailRepository.findById(any())).thenReturn(Optional.empty());
+        when(orderDetailRepository.save(any())).thenReturn(entity);
         // when
-        Book actual = service.record(hg2g);
+        OrderDetail actual = service.record(o66);
         // then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(hg2g);
-//        assertThat(actual).isEqualToComparingFieldByFieldRecursively(hg2g);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(o66);
+        // assertThat(actual).isEqualToComparingFieldByFieldRecursively(hg2g);
     }
 
-    @Test
-    void recordBookUnknownAuthor() throws BookAlreadyExistsException {
-        // given
-        Author frankHerbert = TestDataProvider.getFrankHerbertModel();
-        AuthorEntity frankHerbertEntity = TestDataProvider.getFrankHerbertEntity();
-        Book dune = TestDataProvider.getDune();
-        BookEntity duneEntity = TestDataProvider.getDuneEntity();
-        when(bookRepository.findById(TestDataProvider.DUNE_ISBN)).thenReturn(Optional.empty());
-        when(authorRepository.findById(frankHerbert.getId())).thenReturn(Optional.empty());
-        when(authorRepository.save(frankHerbertEntity)).thenReturn(frankHerbertEntity);
-        when(bookRepository.save(duneEntity)).thenReturn(duneEntity);
-        // when
-        Book actual = service.record(dune);
-        // then
-        assertThat(actual).usingRecursiveComparison()
-            .isEqualTo(dune);
-    }
 
     @Test
-    void recordBookAlreadyExistsException() {
+    void recordOrderDetailAlreadyExistsException() {
+
         // given
-        Book hg2g = TestDataProvider.getHitchhikersGuide();
-        BookEntity hg2gEntity = TestDataProvider.getHitchhikersGuideEntity();
-        when(bookRepository.findById(TestDataProvider.HG2G_ISBN)).thenReturn(Optional.ofNullable(hg2gEntity));
+        OrderDetail hg2g = TestDataProvider.getOrder66();
+        OrderDetailEntity hg2gEntity = TestDataProvider.getOrder66Entity();
+        when(orderDetailRepository.findById(TestDataProvider.orderNumber)).thenReturn(Optional.ofNullable(hg2gEntity));
         // when
         assertThatThrownBy(() -> {
             service.record(hg2g);
-        }).isInstanceOf(BookAlreadyExistsException.class);
+        }).isInstanceOf(OrderDetailAlreadyExistsException.class);
     }
 
     @Test
-    void readByIsbnHappyPath() throws BookNotFoundException {
+    void readOrderNumberHappyPath() throws OrderDetailNotFoundException {
+
         // given
-        when(bookRepository.findById(TestDataProvider.HG2G_ISBN))
-            .thenReturn(Optional.of(TestDataProvider.getHitchhikersGuideEntity()));
-        Book expected = TestDataProvider.getHitchhikersGuide();
+        when(orderDetailRepository.findById(TestDataProvider.orderNumber))
+            .thenReturn(Optional.of(TestDataProvider.getOrder66Entity()));
+        OrderDetail expected = TestDataProvider.getOrder66();
         // when
-        Book actual = service.readByIsbn(TestDataProvider.HG2G_ISBN);
+        OrderDetail actual = service.readByOrderNumber(TestDataProvider.orderNumber);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @Test
-    void readByIsbnBookNotFoundException() {
+    void readByOrderNumberOrderDetailNotFoundException() {
         // given
-        when(bookRepository.findById(TestDataProvider.UNKNOWN_ISBN)).thenReturn(Optional.empty());
+        when(orderDetailRepository.findById(TestDataProvider.WrongOrderNumber)).thenReturn(Optional.empty());
         // when then
         assertThatThrownBy(() -> {
-            service.readByIsbn(TestDataProvider.UNKNOWN_ISBN);
-        }).isInstanceOf(BookNotFoundException.class)
-            .hasMessageContaining(TestDataProvider.UNKNOWN_ISBN);
+            service.readByOrderNumber(TestDataProvider.WrongOrderNumber);
+        }).isInstanceOf(OrderDetailNotFoundException.class)
+            .hasMessageContaining("Wrong number");
     }
 
     @Test
     void readAllHappyPath() {
         // given
-        List<BookEntity> bookEntities = List.of(
-            TestDataProvider.getDuneEntity(),
-            TestDataProvider.getHitchhikersGuideEntity()
+        List<OrderDetailEntity> orderDetailEntities = List.of(
+            TestDataProvider.getOrder66Entity()
         );
-        Collection<Book> expectedBooks = List.of(
-            TestDataProvider.getDune(),
-            TestDataProvider.getHitchhikersGuide()
+        Collection<OrderDetail> expectedOrderDetails = List.of(
+            TestDataProvider.getOrder66()
         );
-        when(bookRepository.findAll()).thenReturn(bookEntities);
+        when(orderDetailRepository.findAll()).thenReturn(orderDetailEntities);
         // when
-        Collection<Book> actualBooks = service.readAll();
+        Collection<OrderDetail> actualOrderDetails = service.readAll();
         // then
-        assertThat(actualBooks)
+        assertThat(actualOrderDetails)
             .usingRecursiveComparison()
-            .isEqualTo(expectedBooks);
-//            .containsExactlyInAnyOrderElementsOf(expectedBooks);
+            .isEqualTo(expectedOrderDetails);
     }
 
     @Test
-    void modifyBookHappyPath() {
+    void modifyOrderDetailHappyPath() {
         // given
-        Book hg2g = TestDataProvider.getHitchhikersGuide();
-        BookEntity hg2gEntity = TestDataProvider.getHitchhikersGuideEntity();
-        when(bookRepository.save(hg2gEntity)).thenReturn(hg2gEntity);
+        OrderDetail hg2g = TestDataProvider.getOrder66();
+        OrderDetailEntity hg2gEntity = TestDataProvider.getOrder66Entity();
+        when(orderDetailRepository.save(hg2gEntity)).thenReturn(hg2gEntity);
         // when
-        Book actual = service.modify(hg2g);
+        OrderDetail actual = service.modify(hg2g);
         // then
         assertThat(actual).usingRecursiveComparison()
             .isEqualTo(hg2g);
@@ -142,67 +116,27 @@ class OrderDetailManagerImplTest {
 
     private static class TestDataProvider {
 
-        public static final String UNKNOWN_ISBN = "1-00000-000-X";
+        public static final Integer WrongOrderNumber = -1;
 
-        public static final String HG2G_ISBN = "1-85695-028-X";
+        public static final Integer orderNumber = 66;
 
-        public static final String HG2G_TITLE = "The Hitchhiker's Guide to the Galaxy";
+        public static final String productCode = "1";
 
-        public static final String DUNE_ISBN = "978-0240807720";
+        public static final Integer quantityOrdered = 1;
 
-        public static final String DUNE_TITLE = "Dune";
+        public static final Double priceEach = 1.0;
 
+        public static final Integer orderLineNumber = 1;
 
-        public static Author getDouglasAdamsModel() {
-            return new Author(1, "Douglas", "Adams", "English");
+        public static OrderDetail getOrder66() {
+
+            return new OrderDetail(orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber);
         }
 
-        public static Author getFrankHerbertModel() {
-            return new Author(2, "Frank", "Herbert", "American");
+        public static OrderDetailEntity getOrder66Entity() {
+
+            return new OrderDetailEntity(orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber);
         }
 
-        public static AuthorEntity getDouglasAdamsEntity() {
-            return AuthorEntity.builder()
-                .id(1)
-                .firstName("Douglas")
-                .lastName("Adams")
-                .nationality("English")
-                .build();
-        }
-
-        public static AuthorEntity getFrankHerbertEntity() {
-            return AuthorEntity.builder()
-                .id(2)
-                .firstName("Frank")
-                .lastName("Herbert")
-                .nationality("American")
-                .build();
-        }
-
-        public static Book getHitchhikersGuide() {
-            return new Book(HG2G_ISBN, getDouglasAdamsModel(), HG2G_TITLE, "English");
-        }
-
-        public static Book getDune() {
-            return new Book(DUNE_ISBN, getFrankHerbertModel(), DUNE_TITLE, "English");
-        }
-
-        public static BookEntity getHitchhikersGuideEntity() {
-            return BookEntity.builder()
-                .isbn(HG2G_ISBN)
-                .title(HG2G_TITLE)
-                .author(getDouglasAdamsEntity())
-                .language("English")
-                .build();
-        }
-
-        public static BookEntity getDuneEntity() {
-            return BookEntity.builder()
-                .isbn(DUNE_ISBN)
-                .title(DUNE_TITLE)
-                .author(getFrankHerbertEntity())
-                .language("English")
-                .build();
-        }
     }
 }
