@@ -234,7 +234,7 @@ class CustomerManagerImplTest {
                 "x2028",
                 "ghernande@classicmodelcars.com",
                 getParisOfficeModel(),
-                1102,
+                null,
                 "Sales Rep"
             );
         }
@@ -247,7 +247,7 @@ class CustomerManagerImplTest {
                 "x4065",
                 "lthompson@classicmodelcars.com",
                 getSanFranciscoOfficeModel(),
-                1143,
+                null,
                 "Sales Rep"
             );
         }
@@ -260,7 +260,7 @@ class CustomerManagerImplTest {
                 .extension("x2028")
                 .email("ghernande@classicmodelcars.com")
                 .office(getParisOfficeEntity())
-                .reportsTo(1102)
+                .reportsTo(null)
                 .jobTitle("Sales Rep")
                 .build();
         }
@@ -273,7 +273,7 @@ class CustomerManagerImplTest {
                 .extension("x4065")
                 .email("lthompson@classicmodelcars.com")
                 .office(getSanFranciscoOfficeEntity())
-                .reportsTo(1143)
+                .reportsTo(null)
                 .jobTitle("Sales Rep")
                 .build();
         }

@@ -24,21 +24,32 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
         this.employeeRepository = employeeRepository;
     }
 
-    protected static Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
-
+    public static Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
+        Employee reportsTo;
+        if (employeeEntity.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeEntity2Model(employeeEntity.getReportsTo());
+        }
         return new Employee(
             employeeEntity.getEmployeeNumber(),
             employeeEntity.getLastName(),
             employeeEntity.getFirstName(),
             employeeEntity.getExtension(),
             employeeEntity.getEmail(),
-            OfficeManagerImpl.convertOfficeEntity2Model(employeeEntity.getOffice()),
-            employeeEntity.getReportsTo(),
+            convertOfficeEntity2Model(employeeEntity.getOffice()),
+            reportsTo,
             employeeEntity.getJobTitle()
         );
     }
 
     protected static EmployeeEntity convertEmployeeModel2Entity(Employee employee) {
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
         return EmployeeEntity.builder()
             .employeeNumber(employee.getEmployeeNumber())
             .lastName(employee.getLastName())
@@ -46,7 +57,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
             .extension(employee.getExtension())
             .email(employee.getEmail())
             .office(convertOfficeModel2Entity(employee.getOffice()))
-            .reportsTo(employee.getReportsTo())
+            .reportsTo(reportsTo)
             .jobTitle(employee.getJobTitle())
             .build();
     }
@@ -57,6 +68,12 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
             throw new EmployeeAlreadyExistsException();
         }
         OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
         EmployeeEntity employeeEntity = employeeRepository.save(
             EmployeeEntity.builder()
                 .employeeNumber(employee.getEmployeeNumber())
@@ -65,7 +82,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
                 .extension(employee.getExtension())
                 .email(employee.getEmail())
                 .office(officeEntity)
-                .reportsTo(employee.getReportsTo())
+                .reportsTo(reportsTo)
                 .jobTitle(employee.getJobTitle())
                 .build()
         );
@@ -73,7 +90,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
     }
 
     @Override
-    public Employee readByEmployeeNumber(Integer employeeNumber) throws EmployeeNotFoundException  {
+    public Employee readByEmployeeNumber(Integer employeeNumber) throws EmployeeNotFoundException {
         Optional<EmployeeEntity> entity = employeeRepository.findById(employeeNumber);
         if (entity.isEmpty()) {
             throw new EmployeeNotFoundException(String.format("Cannot find employee with number %d", employeeNumber));
@@ -104,6 +121,12 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
         if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
             return employeeRepository.findById(employee.getEmployeeNumber()).get();
         }
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
         OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
         return employeeRepository.save(
             EmployeeEntity.builder()
@@ -113,7 +136,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
                 .extension(employee.getExtension())
                 .email(employee.getEmail())
                 .office(officeEntity)
-                .reportsTo(employee.getReportsTo())
+                .reportsTo(reportsTo)
                 .jobTitle(employee.getJobTitle())
                 .build()
         );

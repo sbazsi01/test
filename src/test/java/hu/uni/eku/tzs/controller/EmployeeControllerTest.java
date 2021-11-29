@@ -45,8 +45,6 @@ class EmployeeControllerTest {
         Collection<EmployeeDto> actual = controller.readAllEmployees();
         //then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-
-
     }
 
     @Test
@@ -118,8 +116,23 @@ class EmployeeControllerTest {
         public static final Integer _1056_EMPLOYEENUMBER = 1056;
 
         public static Employee get_1056() {
-            return new Employee(_1056_EMPLOYEENUMBER,"Patterson","Mary","x4611",
-                    "mpatterso@classicmodelcars.com", getSanFranciscoOfficeModel(),1002,"VP Sales");
+            return new Employee(
+                _1056_EMPLOYEENUMBER,
+                "Patterson",
+                "Mary",
+                "x4611",
+                "mpatterson@classicmodelcars.com",
+                getSanFranciscoOfficeModel(),
+                new Employee(
+                    1188,
+                    "Atterson",
+                    "Michael",
+                    "x5611",
+                    "matterson@classicmodelcars.com",
+                    getSanFranciscoOfficeModel(),
+                    null,
+                    "VP Sales"),
+                "VP Sales");
         }
 
         public static EmployeeDto get_1056Dto() {
@@ -128,9 +141,18 @@ class EmployeeControllerTest {
                 .lastName("Patterson")
                 .firstName("Mary")
                 .extension("x4611")
-                .email("mpatterso@classicmodelcars.com")
+                .email("mpatterson@classicmodelcars.com")
                 .office(getSanFranciscoOfficeDto())
-                .reportsTo(1002)
+                .reportsTo(EmployeeDto.builder()
+                .employeeNumber(_1056_EMPLOYEENUMBER)
+                .lastName("Atterson")
+                .firstName("Michael")
+                .extension("x5611")
+                .email("matterson@classicmodelcars.com")
+                .office(getSanFranciscoOfficeDto())
+                .reportsTo(null)
+                .jobTitle("VP Sales")
+                .build())
                 .jobTitle("VP Sales")
                 .build();
         }
@@ -138,8 +160,16 @@ class EmployeeControllerTest {
         public static String OFFICE_CODE_SAN_FRANCISCO = "1";
 
         public static Office getSanFranciscoOfficeModel() {
-            return new Office(OFFICE_CODE_SAN_FRANCISCO, "San Francisco", "+1 650 219 4782", "100 Market Street",
-                    "Suite 300", "CA", "USA", "94080", "NA");
+            return new Office(
+                OFFICE_CODE_SAN_FRANCISCO,
+                "San Francisco",
+                "+1 650 219 4782",
+                "100 Market Street",
+                "Suite 300",
+                "CA",
+                "USA",
+                "94080",
+                "NA");
         }
 
         public static OfficeDto getSanFranciscoOfficeDto() {

@@ -123,7 +123,7 @@ class CustomerControllerTest {
 
         public static Employee get_1370() {
             return new Employee(_1370_EMPLOYEENUMBER,"Hernandez","Gerard","x2028",
-                "ghernande@classicmodelcars.com", getParisOfficeModel(),1102,"Sales Rep");
+                "ghernande@classicmodelcars.com", getParisOfficeModel(),null,"Sales Rep");
         }
 
         public static EmployeeDto get_1370Dto() {
@@ -134,7 +134,7 @@ class CustomerControllerTest {
                 .extension("x2028")
                 .email("ghernande@classicmodelcars.com")
                 .office(getParisOfficeDto())
-                .reportsTo(1102)
+                .reportsTo(null)
                 .jobTitle("Sales Rep")
                 .build();
         }

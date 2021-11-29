@@ -40,7 +40,7 @@ public class EmployeeDto {
     @Valid
     private OfficeDto office;
 
-    private Integer reportsTo;
+    private EmployeeDto reportsTo;
 
     @NotBlank(message = "job title of employee cannot be empty")
     @Size(max = 50, message = "job title cannot be longer than 50 characters")

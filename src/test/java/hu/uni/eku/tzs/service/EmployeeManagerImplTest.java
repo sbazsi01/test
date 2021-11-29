@@ -145,12 +145,12 @@ class EmployeeManagerImplTest {
 
         public static Employee get_1056() {
             return new Employee(_1056,"Patterson","Mary","x4611",
-                    "mpatterso@classicmodelcars.com", getSanFranciscoOfficeModel(),1002,"VP Sales");
+                    "mpatterso@classicmodelcars.com", getSanFranciscoOfficeModel(),get_1188(),"VP Sales");
         }
 
         public static Employee get_1188() {
             return new Employee(_1188,"Firrelli","Julie","x2173",
-                    "jfirrelli@classicmodelcars.com", getBostonOfficeModel(),1143,"Sales Rep");
+                    "jfirrelli@classicmodelcars.com", getBostonOfficeModel(),null,"Sales Rep");
         }
 
         public static EmployeeEntity get_1056Entity() {
@@ -161,7 +161,7 @@ class EmployeeManagerImplTest {
                 .extension("x4611")
                 .email("mpatterso@classicmodelcars.com")
                 .office(getSanFranciscoOfficeEntity())
-                .reportsTo(1002)
+                .reportsTo(get_1188Entity())
                 .jobTitle("VP Sales")
                 .build();
         }
@@ -174,7 +174,7 @@ class EmployeeManagerImplTest {
                 .extension("x2173")
                 .email("jfirrelli@classicmodelcars.com")
                 .office(getBostonOfficeEntity())
-                .reportsTo(1143)
+                .reportsTo(null)
                 .jobTitle("Sales Rep")
                 .build();
         }
@@ -183,13 +183,28 @@ class EmployeeManagerImplTest {
         public static String OFFICE_CODE_BOSTON = "2";
 
         public static Office getSanFranciscoOfficeModel() {
-            return new Office(OFFICE_CODE_SAN_FRANCISCO, "San Francisco", "+1 650 219 4782", "100 Market Street",
-                    "Suite 300", "CA", "USA", "94080", "NA");
+            return new Office(OFFICE_CODE_SAN_FRANCISCO,
+                "San Francisco",
+                "+1 650 219 4782",
+                "100 Market Street",
+                "Suite 300",
+                "CA",
+                "USA",
+                "94080",
+                "NA");
         }
 
         public static Office getBostonOfficeModel() {
-            return new Office(OFFICE_CODE_BOSTON, "Boston", "+1 215 387 0825",
-                    "1550 Court Place", "Suite 102", "MA", "USA", "02107", "NA");
+            return new Office(
+                OFFICE_CODE_BOSTON,
+                "Boston",
+                "+1 215 387 0825",
+                "1550 Court Place",
+                "Suite 102",
+                "MA",
+                "USA",
+                "02107",
+                "NA");
         }
 
         public static OfficeEntity getSanFranciscoOfficeEntity() {
