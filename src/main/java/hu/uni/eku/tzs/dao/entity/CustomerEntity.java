@@ -53,7 +53,7 @@ public class CustomerEntity {
 
     @ManyToOne
     @JoinColumn(name = "salesRepEmployeeNumber")
-    private EmployeeEntity salesRepEmployee;
+    private EmployeeEntity salesRepEmployeeNumber;
 
     @Column(name = "creditLimit")
     private double creditLimit;

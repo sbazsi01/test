@@ -24,13 +24,13 @@ public class OrderEntity {
     private int orderNumber;
 
     @Column(name = "orderDate", nullable = false)
-    private LocalDate orderDate;
+    private String orderDate;
 
     @Column(name = "requiredDate", nullable = false)
-    private LocalDate requiredDate;
+    private String requiredDate;
 
     @Column(name = "shippedDate")
-    private LocalDate shippedDate;
+    private String shippedDate;
 
     @Column(name = "status", nullable = false, length = 15)
     private String status;

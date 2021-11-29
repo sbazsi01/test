@@ -29,7 +29,7 @@ public class ProductEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "productLine", nullable = false)
-    private ProductLineEntity productLine;
+    private ProductLinesEntity productLine;
 
     @Column(name = "productScale", nullable = false, length = 10)
     private String productScale;
