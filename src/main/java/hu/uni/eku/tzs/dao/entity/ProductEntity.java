@@ -1,15 +1,16 @@
 package hu.uni.eku.tzs.dao.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Data
 @Builder
@@ -23,6 +24,7 @@ public class ProductEntity {
     private String productCode;
 
     @Column(name = "productName", nullable = false, length = 70)
+
     private String productName;
 
     @ManyToOne(optional = false)

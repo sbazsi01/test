@@ -6,9 +6,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: library
+      MYSQL_DATABASE: classicmodels
     volumes:
-      - './src/main/resources/sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql'
+      - './src/main/resources/sql/classicmodels.sql:/docker-entrypoint-initdb.d/classicmodels.sql'
     ports:
       - '127.0.0.1:3306:3306'
   backend:
@@ -20,7 +20,7 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      DB_NAME: library
+      DB_NAME: classicmodels
       DB_USER: root
       DB_PASSWORD: password
     depends_on:

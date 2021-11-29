@@ -43,4 +43,6 @@ public class EmployeeEntity {
 
     @Column(name = "jobTitle", nullable = false, length = 50)
     private String jobTitle;
+
 }
+
