@@ -31,6 +31,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
         } else {
             reportsTo = convertEmployeeEntity2Model(employeeEntity.getReportsTo());
         }
+
         return new Employee(
             employeeEntity.getEmployeeNumber(),
             employeeEntity.getLastName(),

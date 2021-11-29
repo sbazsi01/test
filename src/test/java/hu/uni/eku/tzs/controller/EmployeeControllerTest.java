@@ -90,7 +90,6 @@ class EmployeeControllerTest {
             .isEqualTo(expected);
     }
 
-
     @Test
     void deleteFromQueryParamHappyPath() throws EmployeeNotFoundException {
         // given
@@ -186,6 +185,4 @@ class EmployeeControllerTest {
                     .build();
         }
     }
-
-
 }
