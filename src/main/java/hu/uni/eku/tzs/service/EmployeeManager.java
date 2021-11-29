@@ -13,6 +13,8 @@ public interface EmployeeManager {
 
     Collection<Employee> readAllEmployees();
 
+    Collection<Employee> readAllByOffice(String officeCode);
+
     Employee modify(Employee employee);
 
     void delete(Employee employee) throws EmployeeNotFoundException;

@@ -50,6 +50,15 @@ public class EmployeeController {
 
     }
 
+    @ApiOperation("Read All By Office")
+    @GetMapping(value = {"/office"})
+    public Collection<EmployeeDto> readAllEmployeesByOffice(@RequestParam String officeCode) {
+        return employeeManager.readAllByOffice(officeCode)
+            .stream()
+            .map(employeeMapper::employee2employeeDto)
+            .collect(Collectors.toList());
+    }
+
     @ApiOperation("Record")
     @PostMapping(value = {"", "/"})
     public EmployeeDto create(@Valid @RequestBody EmployeeDto recordRequestDto) {

@@ -106,6 +106,13 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
     }
 
     @Override
+    public Collection<Employee> readAllByOffice(String officeCode) {
+        return employeeRepository.findAllByOffice(officeCode).stream()
+            .map(EmployeeManagerImpl::convertEmployeeEntity2Model)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public Employee modify(Employee employee) {
         EmployeeEntity entity = convertEmployeeModel2Entity(employee);
         return convertEmployeeEntity2Model(employeeRepository.save(entity));
