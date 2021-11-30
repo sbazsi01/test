@@ -4,7 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.MapsId;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,12 +21,14 @@ import java.io.Serializable;
 public class OrderDetailEntity implements Serializable {
 
     @Id
-    @MapsId
-    private Integer orderNumber;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "orderNumber", nullable = false)
+    private OrderEntity orderNumber;
 
     @Id
-    @MapsId
-    private String productCode;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "productCode", nullable = false)
+    private ProductEntity productCode;
 
     @Column(name = "quantityOrdered", nullable = false)
     private int quantityOrdered;

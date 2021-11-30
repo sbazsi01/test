@@ -1,4 +1,4 @@
-package hu.uni.eku.tzs.service;
+/*package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.OrderDetailRepository;
 import hu.uni.eku.tzs.dao.entity.OrderDetailEntity;
@@ -139,4 +139,4 @@ class OrderDetailManagerImplTest {
         }
 
     }
-}
+}*/

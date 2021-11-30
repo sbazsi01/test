@@ -32,12 +32,6 @@ class CustomerManagerImplTest {
     @Mock
     CustomerRepository customerRepository;
 
-    @Mock
-    EmployeeRepository employeeRepository;
-
-    @Mock
-    OfficeRepository officeRepository;
-
     @InjectMocks
     CustomerManagerImpl service;
 
@@ -45,12 +39,9 @@ class CustomerManagerImplTest {
     @Test
     void recordCustomerHappyPath() throws CustomerAlreadyExistsException {
         // given
-        Employee _1370 = TestDataProvider.get_1370();
-        EmployeeEntity _1370Entity = TestDataProvider.get_1370Entity();
         Customer _103 = TestDataProvider.get_103();
         CustomerEntity _103Entity = TestDataProvider.get_103Entity();
         when(customerRepository.findById(any())).thenReturn(Optional.empty());
-        when(employeeRepository.findById(_1370.getEmployeeNumber())).thenReturn(Optional.ofNullable(_1370Entity));
         when(customerRepository.save(any())).thenReturn(_103Entity);
         // when
         Customer actual = service.record(_103);
@@ -61,18 +52,10 @@ class CustomerManagerImplTest {
     @Test
     void recordCustomerUnknownEmployee() throws CustomerAlreadyExistsException {
         // given
-        Employee _1166 = TestDataProvider.get_1166();
-        EmployeeEntity _1166Entity = TestDataProvider.get_1166Entity();
         Customer _112 = TestDataProvider.get_112();
         CustomerEntity _112Entity = TestDataProvider.get_112Entity();
-        Office SanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
-        OfficeEntity SanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
         when(customerRepository.findById(TestDataProvider._112)).thenReturn(Optional.empty());
-        when(officeRepository.findById(SanFrancisco.getOfficeCode())).thenReturn(Optional.empty());
-        when(employeeRepository.findById(_1166.getEmployeeNumber())).thenReturn(Optional.empty());
-        when(employeeRepository.save(_1166Entity)).thenReturn(_1166Entity);
         when(customerRepository.save(_112Entity)).thenReturn(_112Entity);
-        when(officeRepository.save(SanFranciscoEntity)).thenReturn(SanFranciscoEntity);
         // when
         Customer actual = service.record(_112);
         // then

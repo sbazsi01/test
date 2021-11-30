@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Id;
-
 @Getter
 @Setter
 @Data
@@ -15,10 +13,9 @@ import javax.persistence.Id;
 @AllArgsConstructor
 public class OrderDetail {
 
-    @Id
-    private Integer orderNumber;
+    private Order orderNumber;
 
-    private String productCode;
+    private Product productCode;
 
     private Integer quantityOrdered;
 

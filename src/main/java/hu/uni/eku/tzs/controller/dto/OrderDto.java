@@ -1,13 +1,9 @@
 package hu.uni.eku.tzs.controller.dto;
 
-import hu.uni.eku.tzs.model.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -15,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class OrderDto {
 
-    @NotBlank(message = "order number can't be empty")
     private int orderNumber;
 
     private String orderDate;
@@ -28,7 +23,6 @@ public class OrderDto {
 
     private String comments;
 
-    @Valid
-    private Customer customerNumber;
+    private CustomerDto customer;
 
 }

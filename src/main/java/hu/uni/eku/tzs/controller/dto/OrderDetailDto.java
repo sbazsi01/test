@@ -5,18 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Pattern;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetailDto {
 
-    @Pattern(regexp = "^[0-9]+", message = "invalid order number")
-    private Integer orderNumber;
+    private OrderDto orderNumber;
 
-    private String productCode;
+    private ProductDto productCode;
 
     private Integer quantityOrdered;
 

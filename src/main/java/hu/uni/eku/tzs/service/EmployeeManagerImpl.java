@@ -1,28 +1,21 @@
 package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.EmployeeRepository;
-import hu.uni.eku.tzs.dao.OfficeRepository;
 import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
-import hu.uni.eku.tzs.dao.entity.OfficeEntity;
 import hu.uni.eku.tzs.model.Employee;
-import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.service.exceptions.EmployeeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.EmployeeNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeManager {
+@RequiredArgsConstructor
+public class EmployeeManagerImpl implements EmployeeManager {
 
     protected final EmployeeRepository employeeRepository;
-
-    public EmployeeManagerImpl(EmployeeRepository employeeRepository,
-                               OfficeRepository officeRepository) {
-        super(officeRepository);
-        this.employeeRepository = employeeRepository;
-    }
 
     public static Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
         Employee reportsTo;
@@ -38,7 +31,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
             employeeEntity.getFirstName(),
             employeeEntity.getExtension(),
             employeeEntity.getEmail(),
-            convertOfficeEntity2Model(employeeEntity.getOffice()),
+            OfficeManagerImpl.convertOfficeEntity2Model(employeeEntity.getOffice()),
             reportsTo,
             employeeEntity.getJobTitle()
         );
@@ -57,7 +50,7 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
             .firstName(employee.getFirstName())
             .extension(employee.getExtension())
             .email(employee.getEmail())
-            .office(convertOfficeModel2Entity(employee.getOffice()))
+            .office(OfficeManagerImpl.convertOfficeModel2Entity(employee.getOffice()))
             .reportsTo(reportsTo)
             .jobTitle(employee.getJobTitle())
             .build();
@@ -68,24 +61,8 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
         if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
             throw new EmployeeAlreadyExistsException();
         }
-        OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
-        EmployeeEntity reportsTo;
-        if (employee.getReportsTo() == null) {
-            reportsTo = null;
-        } else {
-            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
-        }
         EmployeeEntity employeeEntity = employeeRepository.save(
-            EmployeeEntity.builder()
-                .employeeNumber(employee.getEmployeeNumber())
-                .lastName(employee.getLastName())
-                .firstName(employee.getFirstName())
-                .extension(employee.getExtension())
-                .email(employee.getEmail())
-                .office(officeEntity)
-                .reportsTo(reportsTo)
-                .jobTitle(employee.getJobTitle())
-                .build()
+            convertEmployeeModel2Entity(employee)
         );
         return convertEmployeeEntity2Model(employeeEntity);
     }
@@ -123,49 +100,5 @@ public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeMa
     public void delete(Employee employee) {
         employeeRepository.delete(convertEmployeeModel2Entity(employee));
 
-    }
-
-    public EmployeeEntity readOrRecordEmployee(Employee employee) {
-        if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
-            return employeeRepository.findById(employee.getEmployeeNumber()).get();
-        }
-        EmployeeEntity reportsTo;
-        if (employee.getReportsTo() == null) {
-            reportsTo = null;
-        } else {
-            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
-        }
-        OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
-        return employeeRepository.save(
-            EmployeeEntity.builder()
-                .employeeNumber(employee.getEmployeeNumber())
-                .lastName(employee.getLastName())
-                .firstName(employee.getFirstName())
-                .extension(employee.getExtension())
-                .email(employee.getEmail())
-                .office(officeEntity)
-                .reportsTo(reportsTo)
-                .jobTitle(employee.getJobTitle())
-                .build()
-        );
-    }
-
-    public OfficeEntity readOrRecordOffice(Office office) {
-        if (officeRepository.findById(office.getOfficeCode()).isPresent()) {
-            return officeRepository.findById(office.getOfficeCode()).get();
-        }
-        return officeRepository.save(
-                OfficeEntity.builder()
-                        .officeCode(office.getOfficeCode())
-                        .addressLine1(office.getAddressLine1())
-                        .addressLine2(office.getAddressLine2())
-                        .city(office.getCity())
-                        .country(office.getCountry())
-                        .state(office.getState())
-                        .phone(office.getPhone())
-                        .postalCode(office.getPostalCode())
-                        .territory(office.getTerritory())
-                        .build()
-        );
     }
 }

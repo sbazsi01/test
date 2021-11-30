@@ -2,7 +2,6 @@ package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.OrderRepository;
 import hu.uni.eku.tzs.dao.entity.OrderEntity;
-import hu.uni.eku.tzs.model.Customer;
 import hu.uni.eku.tzs.model.Order;
 import hu.uni.eku.tzs.service.exceptions.OrderAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OrderNotFoundException;
@@ -19,7 +18,7 @@ public class OrderManagerImpl implements OrderManager {
 
     private final OrderRepository orderRepository;
 
-    private static Order convertOrderEntity2Model(OrderEntity orderEntity) {
+    protected static Order convertOrderEntity2Model(OrderEntity orderEntity) {
         return new Order(
             orderEntity.getOrderNumber(),
             orderEntity.getOrderDate(),
@@ -31,7 +30,7 @@ public class OrderManagerImpl implements OrderManager {
         );
     }
 
-    private static OrderEntity convertOrderModel2Entity(Order order) {
+    protected static OrderEntity convertOrderModel2Entity(Order order) {
 
         return OrderEntity.builder()
             .orderNumber(order.getOrderNumber())

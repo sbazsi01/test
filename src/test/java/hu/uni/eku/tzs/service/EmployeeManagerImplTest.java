@@ -28,21 +28,15 @@ class EmployeeManagerImplTest {
     @Mock
     EmployeeRepository employeeRepository;
 
-    @Mock
-    OfficeRepository officeRepository;
-
     @InjectMocks
     EmployeeManagerImpl service;
 
     @Test
     void recordEmployeeHappyPath() throws EmployeeAlreadyExistsException {
         // given
-        Office boston = TestDataProvider.getBostonOfficeModel();
-        OfficeEntity bostonEntity = TestDataProvider.getBostonOfficeEntity();
         Employee _1188 = TestDataProvider.get_1188();
         EmployeeEntity _1188Entity = TestDataProvider.get_1188Entity();
         when(employeeRepository.findById(any())).thenReturn(Optional.empty());
-        when(officeRepository.findById(boston.getOfficeCode())).thenReturn(Optional.ofNullable(bostonEntity));
         when(employeeRepository.save(any())).thenReturn(_1188Entity);
         // when
         Employee actual = service.record(_1188);
@@ -53,13 +47,9 @@ class EmployeeManagerImplTest {
     @Test
     void recordEmployeeUnknownOffice() throws EmployeeAlreadyExistsException {
         // given
-        Office sanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
-        OfficeEntity sanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
         Employee _1056 = TestDataProvider.get_1056();
         EmployeeEntity _1056Entity = TestDataProvider.get_1056Entity();
         when(employeeRepository.findById(TestDataProvider._1056)).thenReturn(Optional.empty());
-        when(officeRepository.findById(sanFrancisco.getOfficeCode())).thenReturn(Optional.empty());
-        when(officeRepository.save(sanFranciscoEntity)).thenReturn(sanFranciscoEntity);
         when(employeeRepository.save(_1056Entity)).thenReturn(_1056Entity);
         // when
         Employee actual = service.record(_1056);

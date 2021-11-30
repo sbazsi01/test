@@ -2,6 +2,7 @@ package hu.uni.eku.tzs.controller;
 
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
+import hu.uni.eku.tzs.dao.entity.OrderDetailId;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.OrderDetailManager;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,18 +67,12 @@ public class OrderDetailController {
 
     @ApiOperation("Delete")
     @DeleteMapping(value = {"", "/"})
-    public void delete(@RequestParam Integer orderNumber) {
+    public void delete(@RequestParam Integer orderNumber, @RequestParam String productCode) {
         try {
-            orderDetailManager.delete(orderDetailManager.readByOrderNumber(orderNumber));
+            orderDetailManager.delete(
+                orderDetailManager.readByOrderDetailId(new OrderDetailId(orderNumber, productCode)));
         } catch (OrderDetailNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-    @ApiOperation("Delete")
-    @DeleteMapping(value = {"/{orderNumber}"})
-    public void deleteBasedOnPath(@PathVariable Integer orderNumber) {
-        this.delete(orderNumber);
-    }
-
 }

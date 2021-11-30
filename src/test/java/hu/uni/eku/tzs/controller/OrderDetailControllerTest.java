@@ -1,4 +1,4 @@
-package hu.uni.eku.tzs.controller;
+/*package hu.uni.eku.tzs.controller;
 
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
@@ -129,4 +129,4 @@ class OrderDetailControllerTest {
     }
 
 
-}
+}*/

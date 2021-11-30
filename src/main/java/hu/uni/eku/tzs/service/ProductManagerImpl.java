@@ -38,7 +38,7 @@ public class ProductManagerImpl implements ProductManager {
                 .build();
     }
 
-    private static Product convertProductEntity2Model(ProductEntity productEntity) {
+    protected static Product convertProductEntity2Model(ProductEntity productEntity) {
         return new Product(
                 productEntity.getProductCode(),
                 productEntity.getProductName(),
@@ -52,7 +52,7 @@ public class ProductManagerImpl implements ProductManager {
         );
     }
 
-    private static ProductEntity convertProductModel2Entity(Product product) {
+    protected static ProductEntity convertProductModel2Entity(Product product) {
         return ProductEntity.builder()
                 .productCode(product.getProductCode())
                 .productName(product.getProductName())

@@ -8,7 +8,7 @@ import hu.uni.eku.tzs.service.exceptions.OfficeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OfficeNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +29,12 @@ import java.util.stream.Collectors;
 @Api(tags = "Offices")
 @RequestMapping("/offices")
 @RestController
+@RequiredArgsConstructor
 public class OfficeController {
 
     private final OfficeManager officeManager;
 
     private final OfficeMapper officeMapper;
-
-    public OfficeController(@Qualifier("officeManagerImpl")OfficeManager officeManager, OfficeMapper officeMapper) {
-        this.officeManager = officeManager;
-        this.officeMapper = officeMapper;
-    }
 
     @ApiOperation("Read All")
     @GetMapping(value = {"/", ""})

@@ -2,6 +2,7 @@ package hu.uni.eku.tzs.service;
 
 import hu.uni.eku.tzs.dao.OrderDetailRepository;
 import hu.uni.eku.tzs.dao.entity.OrderDetailEntity;
+import hu.uni.eku.tzs.dao.entity.OrderDetailId;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
@@ -20,8 +21,8 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
 
     private static OrderDetail convertOrderDetailEntity2Model(OrderDetailEntity orderDetailEntity) {
         return new OrderDetail(
-            orderDetailEntity.getOrderNumber(),
-                orderDetailEntity.getProductCode(),
+                OrderManagerImpl.convertOrderEntity2Model(orderDetailEntity.getOrderNumber()),
+                ProductManagerImpl.convertProductEntity2Model(orderDetailEntity.getProductCode()),
                 orderDetailEntity.getQuantityOrdered(),
                 orderDetailEntity.getPriceEach(),
                 orderDetailEntity.getOrderLineNumber()
@@ -29,25 +30,29 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     }
 
     private static OrderDetailEntity convertOrderDetailModel2Entity(OrderDetail orderDetail) {
-        return new OrderDetailEntity(
-                orderDetail.getOrderNumber(),
-                orderDetail.getProductCode(),
-                orderDetail.getQuantityOrdered(),
-                orderDetail.getPriceEach(),
-                orderDetail.getOrderLineNumber()
-        );
+        return OrderDetailEntity.builder()
+            .orderNumber(OrderManagerImpl.convertOrderModel2Entity(orderDetail.getOrderNumber()))
+            .productCode(ProductManagerImpl.convertProductModel2Entity(orderDetail.getProductCode()))
+            .orderLineNumber(orderDetail.getOrderLineNumber())
+            .quantityOrdered(orderDetail.getQuantityOrdered())
+            .priceEach(orderDetail.getPriceEach())
+            .build();
     }
 
     @Override
     public OrderDetail record(OrderDetail orderDetail) throws OrderDetailAlreadyExistsException {
-        if (orderDetailRepository.findById(orderDetail.getOrderNumber()).isPresent()) {
+
+        /* OrderDetailId orderDetailId = new OrderDetailId(orderDetail.getOrderNumber().getOrderNumber(),
+            orderDetail.getProductCode().getProductCode());
+        if (orderDetailRepository.findById(orderDetailId).isPresent()) {
             throw new OrderDetailAlreadyExistsException();
-        }
+        }*/
+
         OrderDetailEntity orderDetailEntity = orderDetailRepository.save(
                 OrderDetailEntity.builder()
-                        .orderNumber(orderDetail.getOrderNumber())
+                        .orderNumber(OrderManagerImpl.convertOrderModel2Entity(orderDetail.getOrderNumber()))
+                        .productCode(ProductManagerImpl.convertProductModel2Entity(orderDetail.getProductCode()))
                         .orderLineNumber(orderDetail.getOrderLineNumber())
-                        .productCode(orderDetail.getProductCode())
                         .quantityOrdered(orderDetail.getQuantityOrdered())
                         .priceEach(orderDetail.getPriceEach())
                         .build()
@@ -56,11 +61,12 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     }
 
     @Override
-    public OrderDetail readByOrderNumber(Integer orderNumber) throws OrderDetailNotFoundException {
-        Optional<OrderDetailEntity> entity = orderDetailRepository.findById(orderNumber);
+    public OrderDetail readByOrderDetailId(OrderDetailId orderDetailId) throws OrderDetailNotFoundException {
+        Optional<OrderDetailEntity> entity = orderDetailRepository.findById(orderDetailId);
         if (entity.isEmpty()) {
             throw new OrderDetailNotFoundException(
-                    String.format("Cannot find order detail with order number %s", orderNumber));
+                    String.format("Cannot find order detail with order number %s and product code %s",
+                        orderDetailId.orderNumber, orderDetailId.productCode));
         }
 
         return convertOrderDetailEntity2Model(entity.get());
