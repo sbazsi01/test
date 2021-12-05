@@ -34,14 +34,14 @@ class EmployeeManagerImplTest {
     @Test
     void recordEmployeeHappyPath() throws EmployeeAlreadyExistsException {
         // given
-        Employee _1188 = TestDataProvider.get_1188();
-        EmployeeEntity _1188Entity = TestDataProvider.get_1188Entity();
+        Employee _1370 = TestDataProvider.get_1370();
+        EmployeeEntity _1370Entity = TestDataProvider.get_1370Entity();
         when(employeeRepository.findById(any())).thenReturn(Optional.empty());
-        when(employeeRepository.save(any())).thenReturn(_1188Entity);
+        when(employeeRepository.save(any())).thenReturn(_1370Entity);
         // when
-        Employee actual = service.record(_1188);
+        Employee actual = service.record(_1370);
         // then
-        assertThat(actual).usingRecursiveComparison().isEqualTo(_1188);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(_1370);
     }
 
     @Test
@@ -61,23 +61,23 @@ class EmployeeManagerImplTest {
     @Test
     void recordEmployeeAlreadyExistsException() {
         // given
-        Employee _1188 = TestDataProvider.get_1188();
-        EmployeeEntity _1188Entity = TestDataProvider.get_1188Entity();
-        when(employeeRepository.findById(TestDataProvider._1188)).thenReturn(Optional.ofNullable(_1188Entity));
+        Employee _1370 = TestDataProvider.get_1370();
+        EmployeeEntity _1370Entity = TestDataProvider.get_1370Entity();
+        when(employeeRepository.findById(TestDataProvider._1370)).thenReturn(Optional.ofNullable(_1370Entity));
         // when
         assertThatThrownBy(() -> {
-            service.record(_1188);
+            service.record(_1370);
         }).isInstanceOf(EmployeeAlreadyExistsException.class);
     }
 
     @Test
     void readByEmployeeNumberHappyPath() throws EmployeeNotFoundException {
         // given
-        when(employeeRepository.findById(TestDataProvider._1188))
-            .thenReturn(Optional.of(TestDataProvider.get_1188Entity()));
-        Employee expected = TestDataProvider.get_1188();
+        when(employeeRepository.findById(TestDataProvider._1370))
+            .thenReturn(Optional.of(TestDataProvider.get_1370Entity()));
+        Employee expected = TestDataProvider.get_1370();
         // when
-        Employee actual = service.readByEmployeeNumber(TestDataProvider._1188);
+        Employee actual = service.readByEmployeeNumber(TestDataProvider._1370);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -98,11 +98,11 @@ class EmployeeManagerImplTest {
         // given
         List<EmployeeEntity> employeeEntities = List.of(
             TestDataProvider.get_1056Entity(),
-            TestDataProvider.get_1188Entity()
+            TestDataProvider.get_1370Entity()
         );
         Collection<Employee> expectedEmployees = List.of(
             TestDataProvider.get_1056(),
-            TestDataProvider.get_1188()
+            TestDataProvider.get_1370()
         );
         when(employeeRepository.findAll()).thenReturn(employeeEntities);
         // when
@@ -116,31 +116,38 @@ class EmployeeManagerImplTest {
     @Test
     void modifyEmployeeHappyPath() {
         // given
-        Employee _1188 = TestDataProvider.get_1188();
-        EmployeeEntity _1188Entity = TestDataProvider.get_1188Entity();
-        when(employeeRepository.save(_1188Entity)).thenReturn(_1188Entity);
+        Employee _1370 = TestDataProvider.get_1370();
+        EmployeeEntity _1370Entity = TestDataProvider.get_1370Entity();
+        when(employeeRepository.save(_1370Entity)).thenReturn(_1370Entity);
         // when
-        Employee actual = service.modify(_1188);
+        Employee actual = service.modify(_1370);
         // then
         assertThat(actual).usingRecursiveComparison()
-            .isEqualTo(_1188);
+            .isEqualTo(_1370);
 
     }
 
-    private static class TestDataProvider {
+    protected static class TestDataProvider {
 
         public static final Integer UNKNOWN_EMPLOYEENUMBER = 9999;
-        public static final Integer _1188 = 1188;
+        public static final Integer _1370 = 1370;
         public static final Integer _1056 = 1056;
 
         public static Employee get_1056() {
             return new Employee(_1056,"Patterson","Mary","x4611",
-                    "mpatterso@classicmodelcars.com", getSanFranciscoOfficeModel(),get_1188(),"VP Sales");
+                    "mpatterso@classicmodelcars.com", OfficeManagerImplTest.TestDataProvider.getSanFranciscoOfficeModel(),get_1370(),"VP Sales");
         }
 
-        public static Employee get_1188() {
-            return new Employee(_1188,"Firrelli","Julie","x2173",
-                    "jfirrelli@classicmodelcars.com", getBostonOfficeModel(),null,"Sales Rep");
+        public static Employee get_1370() {
+            return new Employee(1,
+                "Hernandez",
+                "Gerard",
+                "x2028",
+                "ghernande@classicmodelcars.com",
+                OfficeManagerImplTest.TestDataProvider.getParisOfficeModel(),
+                null,
+                "Sales Rep"
+            );
         }
 
         public static EmployeeEntity get_1056Entity() {
@@ -150,79 +157,23 @@ class EmployeeManagerImplTest {
                 .firstName("Mary")
                 .extension("x4611")
                 .email("mpatterso@classicmodelcars.com")
-                .office(getSanFranciscoOfficeEntity())
-                .reportsTo(get_1188Entity())
+                .office(OfficeManagerImplTest.TestDataProvider.getSanFranciscoOfficeEntity())
+                .reportsTo(get_1370Entity())
                 .jobTitle("VP Sales")
                 .build();
         }
 
-        public static EmployeeEntity get_1188Entity() {
+        public static EmployeeEntity get_1370Entity() {
             return EmployeeEntity.builder()
-                .employeeNumber(_1188)
-                .lastName("Firrelli")
-                .firstName("Julie")
-                .extension("x2173")
-                .email("jfirrelli@classicmodelcars.com")
-                .office(getBostonOfficeEntity())
+                .employeeNumber(1)
+                .lastName("Hernandez")
+                .firstName("Gerard")
+                .extension("x2028")
+                .email("ghernande@classicmodelcars.com")
+                .office(OfficeManagerImplTest.TestDataProvider.getParisOfficeEntity())
                 .reportsTo(null)
                 .jobTitle("Sales Rep")
                 .build();
-        }
-
-        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
-        public static String OFFICE_CODE_BOSTON = "2";
-
-        public static Office getSanFranciscoOfficeModel() {
-            return new Office(OFFICE_CODE_SAN_FRANCISCO,
-                "San Francisco",
-                "+1 650 219 4782",
-                "100 Market Street",
-                "Suite 300",
-                "CA",
-                "USA",
-                "94080",
-                "NA");
-        }
-
-        public static Office getBostonOfficeModel() {
-            return new Office(
-                OFFICE_CODE_BOSTON,
-                "Boston",
-                "+1 215 387 0825",
-                "1550 Court Place",
-                "Suite 102",
-                "MA",
-                "USA",
-                "02107",
-                "NA");
-        }
-
-        public static OfficeEntity getSanFranciscoOfficeEntity() {
-            return OfficeEntity.builder()
-                    .officeCode(OFFICE_CODE_SAN_FRANCISCO)
-                    .city("San Francisco")
-                    .phone("+1 650 219 4782")
-                    .addressLine1("100 Market Street")
-                    .addressLine2("Suite 300")
-                    .state("CA")
-                    .country("USA")
-                    .postalCode("94080")
-                    .territory("NA")
-                    .build();
-        }
-
-        public static OfficeEntity getBostonOfficeEntity() {
-            return OfficeEntity.builder()
-                    .officeCode(OFFICE_CODE_BOSTON)
-                    .city("Boston")
-                    .phone("+1 215 387 0825")
-                    .addressLine1("1550 Court Place")
-                    .addressLine2("Suite 102")
-                    .state("MA")
-                    .country("USA")
-                    .postalCode("02107")
-                    .territory("NA")
-                    .build();
         }
     }
 }

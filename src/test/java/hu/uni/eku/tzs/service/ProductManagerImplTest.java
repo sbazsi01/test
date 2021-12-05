@@ -128,7 +128,7 @@ class ProductManagerImplTest {
                 .isEqualTo(harleyDavidsonProductModel);
     }
 
-    private static class TestDataProvider {
+    public static class TestDataProvider {
 
         public static final String HARLEY_DAVIDSON_CODE = "S10_1678";
         private static final String HARLEY_DAVIDSON_NAME = "1969 Harley Davidson Ultimate Chopper";
@@ -142,7 +142,7 @@ class ProductManagerImplTest {
 
         public static Product getHarleyDavidsonProductModel() {
             return new Product(HARLEY_DAVIDSON_CODE, HARLEY_DAVIDSON_NAME,
-                    getMotorcyclesProductLine(), "1:10", "Min Lin Diecast", HARLEY_DAVIDSON_DESC,
+                    ProductLinesManagerImplTest.TestDataProvider.getMotorCycleModel(), "1:10", "Min Lin Diecast", HARLEY_DAVIDSON_DESC,
                     7933,
                     48.81, 95.7);
         }
@@ -151,7 +151,7 @@ class ProductManagerImplTest {
             return ProductEntity.builder()
                     .productCode(HARLEY_DAVIDSON_CODE)
                     .productName(HARLEY_DAVIDSON_NAME)
-                    .productLine(getMotorcyclesProductLineEntity())
+                    .productLine(ProductLinesManagerImplTest.TestDataProvider.getMotorCycleEntity())
                     .productScale("1:10")
                     .productVendor("Min Lin Diecast")
                     .productDescription(HARLEY_DAVIDSON_DESC)
@@ -163,7 +163,7 @@ class ProductManagerImplTest {
 
         public static Product getMotoGuzziProductModel() {
             return new Product(MOTO_GUZZI_CODE, MOTO_GUZZI_NAME,
-                    getMotorcyclesProductLine(), "1:10", "Highway 66 Mini Classics", MOTO_GUZZI_DESC,
+                ProductLinesManagerImplTest.TestDataProvider.getMotorCycleModel(), "1:10", "Highway 66 Mini Classics", MOTO_GUZZI_DESC,
                     6625,
                     68.99, 118.94);
         }
@@ -172,7 +172,7 @@ class ProductManagerImplTest {
             return ProductEntity.builder()
                     .productCode(MOTO_GUZZI_CODE)
                     .productName(MOTO_GUZZI_NAME)
-                    .productLine(getMotorcyclesProductLineEntity())
+                    .productLine(ProductLinesManagerImplTest.TestDataProvider.getMotorCycleEntity())
                     .productScale("1:10")
                     .productVendor("Highway 66 Mini Classics")
                     .productDescription(MOTO_GUZZI_DESC)
@@ -184,7 +184,7 @@ class ProductManagerImplTest {
 
         public static Product getAlpineRenaultProductModel() {
             return new Product(ALPINE_RENAULT_CODE, ALPINE_RENAULT_NAME,
-                    getClassicCarsProductLine(), "1:10", "Classic Metal Creations", ALPINE_RENAULT_DESC,
+                ProductLinesManagerImplTest.TestDataProvider.getClassicCarsModel(), "1:10", "Classic Metal Creations", ALPINE_RENAULT_DESC,
                     7305,
                     98.58, 214.3);
         }
@@ -193,7 +193,7 @@ class ProductManagerImplTest {
             return ProductEntity.builder()
                     .productCode(ALPINE_RENAULT_CODE)
                     .productName(ALPINE_RENAULT_NAME)
-                    .productLine(getClassicCarsProductLineEntity())
+                    .productLine(ProductLinesManagerImplTest.TestDataProvider.getClassicCarsEntity())
                     .productScale("1:10")
                     .productVendor("Classic Metal Creations")
                     .productDescription(ALPINE_RENAULT_DESC)
@@ -202,29 +202,6 @@ class ProductManagerImplTest {
                     .msrp(214.3)
                     .build();
         }
-
-        public static ProductLines getMotorcyclesProductLine() {
-            return new ProductLines("Motorcycles","motor_desc",null, null);
-        }
-
-        public static ProductLinesEntity getMotorcyclesProductLineEntity() {
-            return ProductLinesEntity.builder()
-                    .productLine("Motorcycles")
-                    .textDescription("motor_desc")
-                    .build();
-        }
-
-        public static ProductLines getClassicCarsProductLine() {
-            return new ProductLines("Classic Cars","cc_desc",null, null);
-        }
-
-        public static ProductLinesEntity getClassicCarsProductLineEntity() {
-            return ProductLinesEntity.builder()
-                    .productLine("Classic Cars")
-                    .textDescription("cc_desc")
-                    .build();
-        }
-
     }
 
 }

@@ -126,7 +126,7 @@ class OfficeManagerImplTest {
                 .isEqualTo(sanFrancisco);
     }
 
-    private static class TestDataProvider {
+    protected static class TestDataProvider {
 
         public static String OFFICE_CODE_SAN_FRANCISCO = "1";
         public static String OFFICE_CODE_BOSTON = "2";

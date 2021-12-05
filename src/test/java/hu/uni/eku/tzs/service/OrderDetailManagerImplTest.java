@@ -1,8 +1,24 @@
-/*package hu.uni.eku.tzs.service;
+package hu.uni.eku.tzs.service;
 
+import hu.uni.eku.tzs.controller.OrderControllerTest;
+import hu.uni.eku.tzs.controller.dto.CustomerDto;
+import hu.uni.eku.tzs.controller.dto.OrderDto;
 import hu.uni.eku.tzs.dao.OrderDetailRepository;
+import hu.uni.eku.tzs.dao.entity.CustomerEntity;
+import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
+import hu.uni.eku.tzs.dao.entity.OfficeEntity;
 import hu.uni.eku.tzs.dao.entity.OrderDetailEntity;
+import hu.uni.eku.tzs.dao.entity.OrderDetailId;
+import hu.uni.eku.tzs.dao.entity.OrderEntity;
+import hu.uni.eku.tzs.dao.entity.ProductEntity;
+import hu.uni.eku.tzs.dao.entity.ProductLinesEntity;
+import hu.uni.eku.tzs.model.Customer;
+import hu.uni.eku.tzs.model.Employee;
+import hu.uni.eku.tzs.model.Office;
+import hu.uni.eku.tzs.model.Order;
 import hu.uni.eku.tzs.model.OrderDetail;
+import hu.uni.eku.tzs.model.Product;
+import hu.uni.eku.tzs.model.ProductLines;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -33,12 +49,13 @@ class OrderDetailManagerImplTest {
     void recordOrderDetailHappyPath() throws OrderDetailAlreadyExistsException {
 
         // given
+        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
         OrderDetail o66 = TestDataProvider.getOrder66();
         OrderDetailEntity entity = TestDataProvider.getOrder66Entity();
         when(orderDetailRepository.findById(any())).thenReturn(Optional.empty());
         when(orderDetailRepository.save(any())).thenReturn(entity);
         // when
-        OrderDetail actual = service.record(o66);
+        OrderDetail actual = service.record(o66,orderDetailId);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(o66);
         // assertThat(actual).isEqualToComparingFieldByFieldRecursively(hg2g);
@@ -49,12 +66,13 @@ class OrderDetailManagerImplTest {
     void recordOrderDetailAlreadyExistsException() {
 
         // given
+        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
         OrderDetail hg2g = TestDataProvider.getOrder66();
         OrderDetailEntity hg2gEntity = TestDataProvider.getOrder66Entity();
-        when(orderDetailRepository.findById(TestDataProvider.orderNumber)).thenReturn(Optional.ofNullable(hg2gEntity));
+        when(orderDetailRepository.findById(orderDetailId)).thenReturn(Optional.ofNullable(hg2gEntity));
         // when
         assertThatThrownBy(() -> {
-            service.record(hg2g);
+            service.record(hg2g,orderDetailId);
         }).isInstanceOf(OrderDetailAlreadyExistsException.class);
     }
 
@@ -62,11 +80,12 @@ class OrderDetailManagerImplTest {
     void readOrderNumberHappyPath() throws OrderDetailNotFoundException {
 
         // given
-        when(orderDetailRepository.findById(TestDataProvider.orderNumber))
+        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
+        when(orderDetailRepository.findById(orderDetailId))
             .thenReturn(Optional.of(TestDataProvider.getOrder66Entity()));
         OrderDetail expected = TestDataProvider.getOrder66();
         // when
-        OrderDetail actual = service.readByOrderNumber(TestDataProvider.orderNumber);
+        OrderDetail actual = service.readByOrderDetailId(orderDetailId);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
@@ -74,12 +93,14 @@ class OrderDetailManagerImplTest {
     @Test
     void readByOrderNumberOrderDetailNotFoundException() {
         // given
-        when(orderDetailRepository.findById(TestDataProvider.WrongOrderNumber)).thenReturn(Optional.empty());
+        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode);
+        when(orderDetailRepository.findById(orderDetailId)).thenReturn(Optional.empty());
         // when then
         assertThatThrownBy(() -> {
-            service.readByOrderNumber(TestDataProvider.WrongOrderNumber);
+            service.readByOrderDetailId(orderDetailId);
         }).isInstanceOf(OrderDetailNotFoundException.class)
-            .hasMessageContaining("Wrong number");
+            .hasMessageContaining(String.format("Cannot find order detail with order number %s and product code %s",
+                orderDetailId.orderNumber, orderDetailId.productCode));
     }
 
     @Test
@@ -130,13 +151,12 @@ class OrderDetailManagerImplTest {
 
         public static OrderDetail getOrder66() {
 
-            return new OrderDetail(orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber);
+            return new OrderDetail(OrderManagerImplTest.TestDataProvider.getTestOrder(), ProductManagerImplTest.TestDataProvider.getHarleyDavidsonProductModel(), quantityOrdered, priceEach, orderLineNumber);
         }
 
         public static OrderDetailEntity getOrder66Entity() {
-
-            return new OrderDetailEntity(orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber);
+            return new OrderDetailEntity(OrderManagerImplTest.TestDataProvider.getTestOrderEntity(), ProductManagerImplTest.TestDataProvider.getHarleyDavidsonProductEntity(), quantityOrdered, priceEach, orderLineNumber);
         }
 
     }
-}*/
+}
