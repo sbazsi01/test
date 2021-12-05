@@ -130,7 +130,7 @@ class EmployeeManagerImplTest {
     protected static class TestDataProvider {
 
         public static final Integer UNKNOWN_EMPLOYEENUMBER = 9999;
-        public static final Integer _1370 = 1370;
+        public static final Integer _1370 = 1;
         public static final Integer _1056 = 1056;
 
         public static Employee get_1056() {
