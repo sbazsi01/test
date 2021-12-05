@@ -11,7 +11,7 @@ public interface OfficeManager {
 
     Office readByOfficeCode(String officeCode) throws OfficeNotFoundException;
 
-    Collection<Office> readAll();
+    Collection<Office> readAllOffices();
 
     Office modify(Office office);
 

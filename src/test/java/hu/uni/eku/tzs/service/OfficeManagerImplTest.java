@@ -31,37 +31,40 @@ class OfficeManagerImplTest {
 
     @Test
     void recordSanFranciscoOffice() throws OfficeAlreadyExistsException {
+        // given
         Office sanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
         OfficeEntity sanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
 
         when(officeRepository.findById(any())).thenReturn(Optional.empty());
         when(officeRepository.save(any())).thenReturn(sanFranciscoEntity);
-
+        // when
         Office actual = service.record(sanFrancisco);
-
+        // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(sanFrancisco);
     }
 
     @Test
     void recordOfficeWithNullParams() throws OfficeAlreadyExistsException {
+        // given
         Office paris = TestDataProvider.getParisOfficeModel();
         OfficeEntity parisEntity = TestDataProvider.getParisOfficeEntity();
 
         when(officeRepository.findById(TestDataProvider.OFFICE_CODE_PARIS)).thenReturn(Optional.empty());
         when(officeRepository.save(parisEntity)).thenReturn(parisEntity);
-
+        // when
         Office actual = service.record(paris);
-
+        // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(paris);
     }
 
     @Test
     void recordOfficeAlreadyExistsException() {
+        // given
         Office sanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
         OfficeEntity sanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
 
         when(officeRepository.findById(sanFrancisco.getOfficeCode())).thenReturn(Optional.ofNullable(sanFranciscoEntity));
-
+        // when
         assertThatThrownBy(() -> {
             service.record(sanFrancisco);
         }).isInstanceOf(OfficeAlreadyExistsException.class);
@@ -69,19 +72,21 @@ class OfficeManagerImplTest {
 
     @Test
     void readByOfficeCodeSanFrancisco() throws OfficeNotFoundException {
+        // given
         when(officeRepository.findById(TestDataProvider.OFFICE_CODE_SAN_FRANCISCO))
                 .thenReturn(Optional.of(TestDataProvider.getSanFranciscoOfficeEntity()));
 
         Office expected = TestDataProvider.getSanFranciscoOfficeModel();
         Office actual = service.readByOfficeCode(TestDataProvider.OFFICE_CODE_SAN_FRANCISCO);
-
+        // when
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     @Test
     void readByOfficeCodeNotFoundException() {
+        // given
         when(officeRepository.findById(TestDataProvider.UNKNOWN_OFFICE_CODE)).thenReturn(Optional.empty());
-
+        // when then
         assertThatThrownBy(() -> {
             service.readByOfficeCode(TestDataProvider.UNKNOWN_OFFICE_CODE);
         }).isInstanceOf(OfficeNotFoundException.class)
@@ -90,6 +95,7 @@ class OfficeManagerImplTest {
 
     @Test
     void readAllOfficesFromNA() {
+        // given
         List<OfficeEntity> officeEntities = List.of(
                 TestDataProvider.getSanFranciscoOfficeEntity(),
                 TestDataProvider.getBostonOfficeEntity()
@@ -99,9 +105,9 @@ class OfficeManagerImplTest {
                 TestDataProvider.getBostonOfficeModel()
         );
         when(officeRepository.findAll()).thenReturn(officeEntities);
-
-        Collection<Office> actualOffices = service.readAll();
-
+        // when
+        Collection<Office> actualOffices = service.readAllOffices();
+        // then
         assertThat(actualOffices)
                 .usingRecursiveComparison()
                 .isEqualTo(expectedOffices);
@@ -109,21 +115,22 @@ class OfficeManagerImplTest {
 
     @Test
     void modifyOfficeSanFrancisco() {
+        // given
         Office sanFrancisco = TestDataProvider.getSanFranciscoOfficeModel();
         OfficeEntity sanFranciscoEntity = TestDataProvider.getSanFranciscoOfficeEntity();
         when(officeRepository.save(sanFranciscoEntity)).thenReturn(sanFranciscoEntity);
-
+        // when
         Office actual = service.modify(sanFrancisco);
-
+        // then
         assertThat(actual).usingRecursiveComparison()
                 .isEqualTo(sanFrancisco);
     }
 
-    private static class TestDataProvider {
+    protected static class TestDataProvider {
 
         public static String OFFICE_CODE_SAN_FRANCISCO = "1";
         public static String OFFICE_CODE_BOSTON = "2";
-        public static String OFFICE_CODE_PARIS = "3";
+        public static String OFFICE_CODE_PARIS = "4";
         public static String UNKNOWN_OFFICE_CODE = "10";
 
         public static Office getSanFranciscoOfficeModel() {
