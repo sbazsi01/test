@@ -50,8 +50,9 @@ public class OrderDetailController {
     public OrderDetailDto create(@Valid @RequestBody OrderDetailDto recordRequestDto) {
         OrderDetail orderDetail = orderDetailMapper.orderDetailDto2orderDetail(recordRequestDto);
         try {
-            OrderDetailId orderDetailId = new OrderDetailId(orderDetail.getOrderNumber().getOrderNumber(),orderDetail.getProductCode().getProductCode());
-            OrderDetail recorded = orderDetailManager.record(orderDetail,orderDetailId);
+            OrderDetailId orderDetailId = new OrderDetailId(orderDetail.getOrderNumber().getOrderNumber(),
+                                            orderDetail.getProductCode().getProductCode());
+            OrderDetail recorded = orderDetailManager.record(orderDetail, orderDetailId);
             return orderDetailMapper.orderDetail2orderDetailDto(recorded);
         } catch (OrderDetailAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

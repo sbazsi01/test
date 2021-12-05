@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface OrderDetailManager {
 
-    OrderDetail record(OrderDetail orderDetail,OrderDetailId orderDetailId) throws OrderDetailAlreadyExistsException;
+    OrderDetail record(OrderDetail orderDetail, OrderDetailId orderDetailId) throws OrderDetailAlreadyExistsException;
 
     OrderDetail readByOrderDetailId(OrderDetailId orderDetailId) throws OrderDetailNotFoundException;
 
