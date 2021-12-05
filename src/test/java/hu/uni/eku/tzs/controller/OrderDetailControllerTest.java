@@ -1,9 +1,13 @@
 package hu.uni.eku.tzs.controller;
 
+import hu.uni.eku.tzs.controller.dto.BookDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
+import hu.uni.eku.tzs.model.Book;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.OrderDetailManager;
+import hu.uni.eku.tzs.service.exceptions.BookAlreadyExistsException;
+import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,6 +45,20 @@ class OrderDetailControllerTest {
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
 
 
+    }
+
+    @Test
+    void createOrderDetailHappyPath() throws OrderDetailAlreadyExistsException {
+        // given
+        OrderDetail order66 = TestDataProvider.getOrder66();
+        OrderDetailDto orderDetailDto = TestDataProvider.getOrder66Dto();
+        when(orderDetailMapper.orderDetailDto2orderDetail(orderDetailDto)).thenReturn(order66);
+        when(orderDetailManager.record(order66)).thenReturn(order66);
+        when(orderDetailMapper.orderDetail2orderDetailDto(order66)).thenReturn(orderDetailDto);
+        // when
+        OrderDetailDto actual = controller.create(orderDetailDto);
+        // then
+        assertThat(actual).usingRecursiveComparison().isEqualTo(orderDetailDto);
     }
 
     private static class TestDataProvider {
