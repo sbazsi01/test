@@ -117,7 +117,7 @@ class CustomerControllerTest {
             .isInstanceOf(ResponseStatusException.class);
     }
 
-    private static class TestDataProvider {
+    public static class TestDataProvider {
 
         public static final Integer _1370_EMPLOYEENUMBER = 1370;
 
@@ -173,7 +173,7 @@ class CustomerControllerTest {
                 null,
                 "44000",
                 "France",
-                get_1370(),
+                EmployeeControllerTest.TestDataProvider.get_1056(),
                 21000.0);
         }
 
@@ -190,7 +190,7 @@ class CustomerControllerTest {
                 .state(null)
                 .postalCode("44000")
                 .country("France")
-                .salesRepEmployeeNumber(get_1370Dto())
+                .salesRepEmployeeNumber(EmployeeControllerTest.TestDataProvider.get_1056Dto())
                 .creditLimit(21000.0)
                 .build();
         }

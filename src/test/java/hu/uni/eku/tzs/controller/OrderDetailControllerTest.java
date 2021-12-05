@@ -1,11 +1,14 @@
-/*package hu.uni.eku.tzs.controller;
+package hu.uni.eku.tzs.controller;
 
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
+import hu.uni.eku.tzs.dao.entity.OrderDetailId;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.OrderDetailManager;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
+import hu.uni.eku.tzs.service.exceptions.OrderNotFoundException;
+import hu.uni.eku.tzs.service.exceptions.ProductNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,7 +59,8 @@ class OrderDetailControllerTest {
         OrderDetail test = TestDataProvider.testOrderDetail();
         OrderDetailDto testDto = TestDataProvider.testOrderDetailDto();
         when(orderDetailMapper.orderDetailDto2orderDetail(testDto)).thenReturn(test);
-        when(orderDetailManager.record(test)).thenReturn(test);
+        when(orderDetailManager.record(test,TestDataProvider.orderNumber,
+            TestDataProvider.productCode)).thenReturn(test);
         when(orderDetailMapper.orderDetail2orderDetailDto(test)).thenReturn(testDto);
         // when
         OrderDetailDto actual = controller.create(testDto);
@@ -71,7 +75,8 @@ class OrderDetailControllerTest {
         OrderDetail test = TestDataProvider.testOrderDetail();
         OrderDetailDto duneDto = TestDataProvider.testOrderDetailDto();
         when(orderDetailMapper.orderDetailDto2orderDetail(duneDto)).thenReturn(test);
-        when(orderDetailManager.record(test)).thenThrow(new OrderDetailAlreadyExistsException());
+        when(orderDetailManager.record(test,TestDataProvider.orderNumber,
+            TestDataProvider.productCode)).thenThrow(new OrderDetailAlreadyExistsException());
         // when then
         assertThatThrownBy(() -> {
             controller.create(duneDto);
@@ -100,33 +105,38 @@ class OrderDetailControllerTest {
     void deleteFromQueryParamHappyPath() throws OrderDetailNotFoundException {
         // given
         OrderDetail test = TestDataProvider.testOrderDetail();
-        when(orderDetailManager.readByOrderNumber(TestDataProvider.testOrderDetail().getOrderNumber())).thenReturn(test);
+        when(orderDetailManager.readByOrderDetailId2(TestDataProvider.orderNumber,TestDataProvider.productCode)).thenReturn(test);
         doNothing().when(orderDetailManager).delete(test);
         // when
-        controller.delete(TestDataProvider.testOrderDetail().getOrderNumber());
+        controller.delete(TestDataProvider.orderNumber,TestDataProvider.productCode);
         // then is not necessary, mock are checked by default
     }
 
     @Test
     void deleteFromQueryParamWhenOrderDetailNotFound() throws OrderDetailNotFoundException {
         // given
-        final Integer notFoundOrderDetailOrderNumber = TestDataProvider.testOrderDetail().getOrderNumber();
-        doThrow(new OrderDetailNotFoundException()).when(orderDetailManager.readByOrderNumber(notFoundOrderDetailOrderNumber));
+        doThrow(new OrderDetailNotFoundException()).when(orderDetailManager).readByOrderDetailId2(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode);
         // when then
-        assertThatThrownBy(() -> controller.delete(notFoundOrderDetailOrderNumber))
+        assertThatThrownBy(() -> controller.delete(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode))
             .isInstanceOf(ResponseStatusException.class);
     }
 
-    private static class TestDataProvider {
+    public static class TestDataProvider {
+
+        public static final Integer WrongOrderNumber = -1;
+
+        public static final Integer orderNumber = 1000;
+
+        public static final String productCode = "1";
         
         public static OrderDetail testOrderDetail() {
-            return new OrderDetail(1,"1",1,1.0,1);
+            return new OrderDetail(OrderControllerTest.TestDataProvider.getTestOrder(),ProductControllerTest.TestDataProvider.getHarleyDavidsonProductModel(),1,1.0,1);
         }
 
         public static OrderDetailDto testOrderDetailDto() {
-            return new OrderDetailDto(1,"1",1,1.0,1);
+            return new OrderDetailDto(OrderControllerTest.TestDataProvider.getOrderDto(),ProductControllerTest.TestDataProvider.getHarleyDavidsonProductDto(),1,1.0,1);
         }
     }
 
 
-}*/
+}

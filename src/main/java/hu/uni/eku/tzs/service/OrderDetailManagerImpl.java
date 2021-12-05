@@ -40,10 +40,10 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     }
 
     @Override
-    public OrderDetail record(OrderDetail orderDetail, OrderDetailId orderDetailId)
+    public OrderDetail record(OrderDetail orderDetail, Integer orderNumber, String productCode)
         throws OrderDetailAlreadyExistsException {
 
-        if (orderDetailRepository.findById(orderDetailId).isPresent()) {
+        if (orderDetailRepository.findById(new OrderDetailId(orderNumber,productCode)).isPresent()) {
             throw new OrderDetailAlreadyExistsException();
         }
 
@@ -66,6 +66,20 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
             throw new OrderDetailNotFoundException(
                     String.format("Cannot find order detail with order number %s and product code %s",
                         orderDetailId.orderNumber, orderDetailId.productCode));
+        }
+
+        return convertOrderDetailEntity2Model(entity.get());
+    }
+
+    @Override
+    public OrderDetail readByOrderDetailId2(Integer orderNumber, String productCode)
+        throws OrderDetailNotFoundException {
+        OrderDetailId orderDetailId = new OrderDetailId(orderNumber, productCode);
+        Optional<OrderDetailEntity> entity = orderDetailRepository.findById(orderDetailId);
+        if (entity.isEmpty()) {
+            throw new OrderDetailNotFoundException(
+                String.format("Cannot find order detail with order number %s and product code %s",
+                    orderDetailId.orderNumber, orderDetailId.productCode));
         }
 
         return convertOrderDetailEntity2Model(entity.get());

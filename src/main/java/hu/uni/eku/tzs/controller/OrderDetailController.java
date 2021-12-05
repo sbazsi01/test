@@ -50,9 +50,9 @@ public class OrderDetailController {
     public OrderDetailDto create(@Valid @RequestBody OrderDetailDto recordRequestDto) {
         OrderDetail orderDetail = orderDetailMapper.orderDetailDto2orderDetail(recordRequestDto);
         try {
-            OrderDetailId orderDetailId = new OrderDetailId(orderDetail.getOrderNumber().getOrderNumber(),
-                                            orderDetail.getProductCode().getProductCode());
-            OrderDetail recorded = orderDetailManager.record(orderDetail, orderDetailId);
+
+            OrderDetail recorded = orderDetailManager.record(orderDetail, orderDetail.getOrderNumber().getOrderNumber(),
+                orderDetail.getProductCode().getProductCode());
             return orderDetailMapper.orderDetail2orderDetailDto(recorded);
         } catch (OrderDetailAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -72,7 +72,7 @@ public class OrderDetailController {
     public void delete(@RequestParam Integer orderNumber, @RequestParam String productCode) {
         try {
             orderDetailManager.delete(
-                orderDetailManager.readByOrderDetailId(new OrderDetailId(orderNumber, productCode)));
+                orderDetailManager.readByOrderDetailId2(orderNumber, productCode));
         } catch (OrderDetailNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

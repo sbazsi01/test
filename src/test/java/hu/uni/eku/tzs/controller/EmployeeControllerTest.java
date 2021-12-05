@@ -110,7 +110,7 @@ class EmployeeControllerTest {
             .isInstanceOf(ResponseStatusException.class);
     }
 
-    private static class TestDataProvider {
+    public static class TestDataProvider {
 
         public static final Integer _1056_EMPLOYEENUMBER = 1056;
 
@@ -121,14 +121,14 @@ class EmployeeControllerTest {
                 "Mary",
                 "x4611",
                 "mpatterson@classicmodelcars.com",
-                getSanFranciscoOfficeModel(),
+                OfficeControllerTest.TestDataProvider.getSanFranciscoOfficeModel(),
                 new Employee(
                     1188,
                     "Atterson",
                     "Michael",
                     "x5611",
                     "matterson@classicmodelcars.com",
-                    getSanFranciscoOfficeModel(),
+                    OfficeControllerTest.TestDataProvider.getSanFranciscoOfficeModel(),
                     null,
                     "VP Sales"),
                 "VP Sales");
@@ -141,48 +141,19 @@ class EmployeeControllerTest {
                 .firstName("Mary")
                 .extension("x4611")
                 .email("mpatterson@classicmodelcars.com")
-                .office(getSanFranciscoOfficeDto())
+                .office(OfficeControllerTest.TestDataProvider.getSanFranciscoOfficeDto())
                 .reportsTo(EmployeeDto.builder()
-                .employeeNumber(_1056_EMPLOYEENUMBER)
-                .lastName("Atterson")
-                .firstName("Michael")
-                .extension("x5611")
-                .email("matterson@classicmodelcars.com")
-                .office(getSanFranciscoOfficeDto())
-                .reportsTo(null)
-                .jobTitle("VP Sales")
-                .build())
+                    .employeeNumber(1188)
+                    .lastName("Atterson")
+                    .firstName("Michael")
+                    .extension("x5611")
+                    .email("matterson@classicmodelcars.com")
+                    .office(OfficeControllerTest.TestDataProvider.getSanFranciscoOfficeDto())
+                    .reportsTo(null)
+                    .jobTitle("VP Sales")
+                    .build())
                 .jobTitle("VP Sales")
                 .build();
-        }
-
-        public static String OFFICE_CODE_SAN_FRANCISCO = "1";
-
-        public static Office getSanFranciscoOfficeModel() {
-            return new Office(
-                OFFICE_CODE_SAN_FRANCISCO,
-                "San Francisco",
-                "+1 650 219 4782",
-                "100 Market Street",
-                "Suite 300",
-                "CA",
-                "USA",
-                "94080",
-                "NA");
-        }
-
-        public static OfficeDto getSanFranciscoOfficeDto() {
-            return OfficeDto.builder()
-                    .officeCode(OFFICE_CODE_SAN_FRANCISCO)
-                    .city("San Francisco")
-                    .phone("+1 650 219 4782")
-                    .addressLine1("100 Market Street")
-                    .addressLine2("Suite 300")
-                    .state("CA")
-                    .country("USA")
-                    .postalCode("94080")
-                    .territory("NA")
-                    .build();
         }
     }
 }

@@ -49,13 +49,12 @@ class OrderDetailManagerImplTest {
     void recordOrderDetailHappyPath() throws OrderDetailAlreadyExistsException {
 
         // given
-        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
         OrderDetail o66 = TestDataProvider.getOrder66();
         OrderDetailEntity entity = TestDataProvider.getOrder66Entity();
         when(orderDetailRepository.findById(any())).thenReturn(Optional.empty());
         when(orderDetailRepository.save(any())).thenReturn(entity);
         // when
-        OrderDetail actual = service.record(o66,orderDetailId);
+        OrderDetail actual = service.record(o66,TestDataProvider.orderNumber,TestDataProvider.productCode);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(o66);
         // assertThat(actual).isEqualToComparingFieldByFieldRecursively(hg2g);
@@ -66,13 +65,12 @@ class OrderDetailManagerImplTest {
     void recordOrderDetailAlreadyExistsException() {
 
         // given
-        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
         OrderDetail hg2g = TestDataProvider.getOrder66();
         OrderDetailEntity hg2gEntity = TestDataProvider.getOrder66Entity();
-        when(orderDetailRepository.findById(orderDetailId)).thenReturn(Optional.ofNullable(hg2gEntity));
+        when(orderDetailRepository.findById(new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode))).thenReturn(Optional.ofNullable(hg2gEntity));
         // when
         assertThatThrownBy(() -> {
-            service.record(hg2g,orderDetailId);
+            service.record(hg2g,TestDataProvider.orderNumber,TestDataProvider.productCode);
         }).isInstanceOf(OrderDetailAlreadyExistsException.class);
     }
 

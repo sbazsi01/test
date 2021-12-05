@@ -116,30 +116,11 @@ public class OrderControllerTest {
     public static class TestDataProvider {
 
         public static final int testOrderNumber = 1000;
-        public static Customer c = new Customer(1, "test", "test", "test", "test", "test", "test", "test", "test", "test", "test", null, 1.5);
 
         public static Order getTestOrder() {
             return new Order(testOrderNumber, "2021.09.01",
                 "2021.09.02", "2021.09.03",
-                "delivered", "ok", c);
-        }
-
-        public static CustomerDto cDto() {
-            return CustomerDto.builder()
-                .customerNumber(1)
-                .customerName("test")
-                .contactLastName("test")
-                .contactFirstName("test")
-                .phone("test")
-                .addressLine1("test")
-                .addressLine2("test")
-                .city("test")
-                .state("test")
-                .postalCode("test")
-                .country("test")
-                .salesRepEmployeeNumber(null)
-                .creditLimit(1.5)
-                .build();
+                "delivered", "ok", CustomerControllerTest.TestDataProvider.get_103());
         }
 
         public static OrderDto getOrderDto() {
@@ -150,7 +131,7 @@ public class OrderControllerTest {
                 .shippedDate("2021.09.03")
                 .status("delivered")
                 .comments("ok")
-                .customer(cDto())
+                .customer(CustomerControllerTest.TestDataProvider.get_103Dto())
                 .build();
         }
     }

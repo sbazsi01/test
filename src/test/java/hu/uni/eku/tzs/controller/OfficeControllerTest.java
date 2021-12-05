@@ -110,7 +110,7 @@ class OfficeControllerTest {
                 .isInstanceOf(ResponseStatusException.class);
     }
 
-    private static class TestDataProvider {
+    public static class TestDataProvider {
 
         public static String OFFICE_CODE_SAN_FRANCISCO = "1";
 
