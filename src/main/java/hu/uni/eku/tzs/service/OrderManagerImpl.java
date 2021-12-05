@@ -18,7 +18,7 @@ public class OrderManagerImpl implements OrderManager {
 
     private final OrderRepository orderRepository;
 
-    private static Order convertOrderEntity2Model(OrderEntity orderEntity) {
+    public static Order convertOrderEntity2Model(OrderEntity orderEntity) {
         return new Order(
                 orderEntity.getOrderNumber(),
                 orderEntity.getOrderDate(),
@@ -30,7 +30,7 @@ public class OrderManagerImpl implements OrderManager {
         );
     }
 
-    private static OrderEntity convertOrderModel2Entity(Order order) {
+    public static OrderEntity convertOrderModel2Entity(Order order) {
         return OrderEntity.builder()
                 .orderNumber(order.getOrderNumber())
                 .orderDate(order.getOrderDate())
