@@ -13,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +61,19 @@ class OrderDetailControllerTest {
         OrderDetailDto actual = controller.create(orderDetailDto);
         // then
         assertThat(actual).usingRecursiveComparison().isEqualTo(orderDetailDto);
+    }
+
+    @Test
+    void createOrderDetailThrowsBookAlreadyExistsException() throws OrderDetailAlreadyExistsException {
+        // given
+        OrderDetail orderDetail = TestDataProvider.getOrder66();
+        OrderDetailDto orderDetailDto = TestDataProvider.getOrder66Dto();
+        when(orderDetailMapper.orderDetailDto2orderDetail(orderDetailDto)).thenReturn(orderDetail);
+        when(orderDetailManager.record(orderDetail)).thenThrow(new BookAlreadyExistsException());
+        // when then
+        assertThatThrownBy(() -> {
+            controller.create(orderDetailDto);
+        }).isInstanceOf(ResponseStatusException.class);
     }
 
     private static class TestDataProvider {
