@@ -40,6 +40,26 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     }
 
     @Override
+    public OrderDetail record(OrderDetail orderDetail, OrderDetailId orderDetailId)
+        throws OrderDetailAlreadyExistsException {
+
+        if (orderDetailRepository.findById(orderDetailId).isPresent()) {
+            throw new OrderDetailAlreadyExistsException();
+        }
+
+        OrderDetailEntity orderDetailEntity = orderDetailRepository.save(
+            OrderDetailEntity.builder()
+                .orderNumber(OrderManagerImpl.convertOrderModel2Entity(orderDetail.getOrderNumber()))
+                .productCode(ProductManagerImpl.convertProductModel2Entity(orderDetail.getProductCode()))
+                .orderLineNumber(orderDetail.getOrderLineNumber())
+                .quantityOrdered(orderDetail.getQuantityOrdered())
+                .priceEach(orderDetail.getPriceEach())
+                .build()
+        );
+        return convertOrderDetailEntity2Model(orderDetailEntity);
+    }
+
+    @Override
     public OrderDetail record(OrderDetail orderDetail, Integer orderNumber, String productCode)
         throws OrderDetailAlreadyExistsException {
 

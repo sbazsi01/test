@@ -1,24 +1,9 @@
 package hu.uni.eku.tzs.service;
 
-import hu.uni.eku.tzs.controller.OrderControllerTest;
-import hu.uni.eku.tzs.controller.dto.CustomerDto;
-import hu.uni.eku.tzs.controller.dto.OrderDto;
 import hu.uni.eku.tzs.dao.OrderDetailRepository;
-import hu.uni.eku.tzs.dao.entity.CustomerEntity;
-import hu.uni.eku.tzs.dao.entity.EmployeeEntity;
-import hu.uni.eku.tzs.dao.entity.OfficeEntity;
 import hu.uni.eku.tzs.dao.entity.OrderDetailEntity;
 import hu.uni.eku.tzs.dao.entity.OrderDetailId;
-import hu.uni.eku.tzs.dao.entity.OrderEntity;
-import hu.uni.eku.tzs.dao.entity.ProductEntity;
-import hu.uni.eku.tzs.dao.entity.ProductLinesEntity;
-import hu.uni.eku.tzs.model.Customer;
-import hu.uni.eku.tzs.model.Employee;
-import hu.uni.eku.tzs.model.Office;
-import hu.uni.eku.tzs.model.Order;
 import hu.uni.eku.tzs.model.OrderDetail;
-import hu.uni.eku.tzs.model.Product;
-import hu.uni.eku.tzs.model.ProductLines;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -65,12 +50,13 @@ class OrderDetailManagerImplTest {
     void recordOrderDetailAlreadyExistsException() {
 
         // given
+        OrderDetailId orderDetailId = new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode);
         OrderDetail hg2g = TestDataProvider.getOrder66();
         OrderDetailEntity hg2gEntity = TestDataProvider.getOrder66Entity();
-        when(orderDetailRepository.findById(new OrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode))).thenReturn(Optional.ofNullable(hg2gEntity));
+        when(orderDetailRepository.findById(orderDetailId)).thenReturn(Optional.ofNullable(hg2gEntity));
         // when
         assertThatThrownBy(() -> {
-            service.record(hg2g,TestDataProvider.orderNumber,TestDataProvider.productCode);
+            service.record(hg2g,orderDetailId);
         }).isInstanceOf(OrderDetailAlreadyExistsException.class);
     }
 
@@ -97,8 +83,8 @@ class OrderDetailManagerImplTest {
         assertThatThrownBy(() -> {
             service.readByOrderDetailId(orderDetailId);
         }).isInstanceOf(OrderDetailNotFoundException.class)
-            .hasMessageContaining(String.format("Cannot find order detail with order number %s and product code %s",
-                orderDetailId.orderNumber, orderDetailId.productCode));
+            .hasMessageContaining(String.format("Cannot find order detail with product code %s and order number %s",
+                 orderDetailId.productCode,orderDetailId.orderNumber));
     }
 
     @Test
