@@ -2,7 +2,6 @@ package hu.uni.eku.tzs.controller;
 
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
-import hu.uni.eku.tzs.dao.entity.OrderDetailId;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.OrderDetailManager;
 import hu.uni.eku.tzs.service.exceptions.OrderDetailAlreadyExistsException;

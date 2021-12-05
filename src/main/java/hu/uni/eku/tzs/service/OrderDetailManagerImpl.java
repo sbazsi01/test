@@ -43,7 +43,7 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     public OrderDetail record(OrderDetail orderDetail, Integer orderNumber, String productCode)
         throws OrderDetailAlreadyExistsException {
 
-        if (orderDetailRepository.findById(new OrderDetailId(orderNumber,productCode)).isPresent()) {
+        if (orderDetailRepository.findById(new OrderDetailId(orderNumber, productCode)).isPresent()) {
             throw new OrderDetailAlreadyExistsException();
         }
 
@@ -64,8 +64,8 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
         Optional<OrderDetailEntity> entity = orderDetailRepository.findById(orderDetailId);
         if (entity.isEmpty()) {
             throw new OrderDetailNotFoundException(
-                    String.format("Cannot find order detail with order number %s and product code %s",
-                        orderDetailId.orderNumber, orderDetailId.productCode));
+                    String.format("Cannot find order detail with product code %s and order number %s",
+                        orderDetailId.productCode, orderDetailId.orderNumber));
         }
 
         return convertOrderDetailEntity2Model(entity.get());
