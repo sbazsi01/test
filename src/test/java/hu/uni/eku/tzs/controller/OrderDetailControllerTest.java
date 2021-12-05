@@ -67,7 +67,7 @@ class OrderDetailControllerTest {
         OrderDetail orderDetail = TestDataProvider.getOrder66();
         OrderDetailDto orderDetailDto = TestDataProvider.getOrder66Dto();
         when(orderDetailMapper.orderDetailDto2orderDetail(orderDetailDto)).thenReturn(orderDetail);
-        when(orderDetailManager.record(orderDetail)).thenThrow(new BookAlreadyExistsException());
+        when(orderDetailManager.record(orderDetail)).thenThrow(new OrderDetailAlreadyExistsException());
         // when then
         assertThatThrownBy(() -> {
             controller.create(orderDetailDto);
