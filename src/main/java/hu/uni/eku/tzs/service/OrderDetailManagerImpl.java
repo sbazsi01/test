@@ -92,7 +92,7 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
     }
 
     @Override
-    public OrderDetail readByOrderDetailId2(Integer orderNumber, String productCode)
+    public OrderDetail readByOrderDetailId(Integer orderNumber, String productCode)
         throws OrderDetailNotFoundException {
         OrderDetailId orderDetailId = new OrderDetailId(orderNumber, productCode);
         Optional<OrderDetailEntity> entity = orderDetailRepository.findById(orderDetailId);

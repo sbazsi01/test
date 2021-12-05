@@ -71,7 +71,7 @@ public class OrderDetailController {
     public void delete(@RequestParam Integer orderNumber, @RequestParam String productCode) {
         try {
             orderDetailManager.delete(
-                orderDetailManager.readByOrderDetailId2(orderNumber, productCode));
+                orderDetailManager.readByOrderDetailId(orderNumber, productCode));
         } catch (OrderDetailNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

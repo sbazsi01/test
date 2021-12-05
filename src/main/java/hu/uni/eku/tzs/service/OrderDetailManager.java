@@ -17,7 +17,7 @@ public interface OrderDetailManager {
 
     OrderDetail readByOrderDetailId(OrderDetailId orderDetailId) throws OrderDetailNotFoundException;
 
-    OrderDetail readByOrderDetailId2(Integer orderNumber, String productCode) throws OrderDetailNotFoundException;
+    OrderDetail readByOrderDetailId(Integer orderNumber, String productCode) throws OrderDetailNotFoundException;
 
     Collection<OrderDetail> readAll();
 

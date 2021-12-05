@@ -105,7 +105,7 @@ class OrderDetailControllerTest {
     void deleteFromQueryParamHappyPath() throws OrderDetailNotFoundException {
         // given
         OrderDetail test = TestDataProvider.testOrderDetail();
-        when(orderDetailManager.readByOrderDetailId2(TestDataProvider.orderNumber,TestDataProvider.productCode)).thenReturn(test);
+        when(orderDetailManager.readByOrderDetailId(TestDataProvider.orderNumber,TestDataProvider.productCode)).thenReturn(test);
         doNothing().when(orderDetailManager).delete(test);
         // when
         controller.delete(TestDataProvider.orderNumber,TestDataProvider.productCode);
@@ -115,7 +115,7 @@ class OrderDetailControllerTest {
     @Test
     void deleteFromQueryParamWhenOrderDetailNotFound() throws OrderDetailNotFoundException {
         // given
-        doThrow(new OrderDetailNotFoundException()).when(orderDetailManager).readByOrderDetailId2(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode);
+        doThrow(new OrderDetailNotFoundException()).when(orderDetailManager).readByOrderDetailId(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode);
         // when then
         assertThatThrownBy(() -> controller.delete(TestDataProvider.WrongOrderNumber,TestDataProvider.productCode))
             .isInstanceOf(ResponseStatusException.class);
