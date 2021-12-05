@@ -21,7 +21,8 @@ public class OrderDetailManagerImpl implements OrderDetailManager {
 
     private static OrderDetail convertOrderDetailEntity2Model(OrderDetailEntity orderDetailEntity) {
         return new OrderDetail(
-                OrderManagerImpl.convertOrderEntity2Model(orderDetailEntity.getOrderNumber()),
+                OrderManagerImpl.co
+                //OrderManagerImpl.convertOrderEntity2Model(orderDetailEntity.getOrderNumber()),
                 ProductManagerImpl.convertProductEntity2Model(orderDetailEntity.getProductCode()),
                 orderDetailEntity.getQuantityOrdered(),
                 orderDetailEntity.getPriceEach(),
