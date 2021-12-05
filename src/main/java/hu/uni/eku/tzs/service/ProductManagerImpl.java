@@ -20,7 +20,7 @@ public class ProductManagerImpl implements ProductManager {
 
     private final ProductRepository productRepository;
 
-    private static ProductLines convertProductLinesEntity2Model(ProductLinesEntity productLinesEntity) {
+    public static ProductLines convertProductLinesEntity2Model(ProductLinesEntity productLinesEntity) {
         return new ProductLines(
                 productLinesEntity.getProductLine(),
                 productLinesEntity.getTextDescription(),
@@ -29,7 +29,7 @@ public class ProductManagerImpl implements ProductManager {
         );
     }
 
-    private static ProductLinesEntity convertProductLinesModel2Entity(ProductLines productLines) {
+    public static ProductLinesEntity convertProductLinesModel2Entity(ProductLines productLines) {
         return ProductLinesEntity.builder()
                 .productLine(productLines.getProductLine())
                 .textDescription(productLines.getTextDescription())
@@ -38,7 +38,7 @@ public class ProductManagerImpl implements ProductManager {
                 .build();
     }
 
-    protected static Product convertProductEntity2Model(ProductEntity productEntity) {
+    public static Product convertProductEntity2Model(ProductEntity productEntity) {
         return new Product(
                 productEntity.getProductCode(),
                 productEntity.getProductName(),
@@ -52,7 +52,7 @@ public class ProductManagerImpl implements ProductManager {
         );
     }
 
-    protected static ProductEntity convertProductModel2Entity(Product product) {
+    public static ProductEntity convertProductModel2Entity(Product product) {
         return ProductEntity.builder()
                 .productCode(product.getProductCode())
                 .productName(product.getProductName())
