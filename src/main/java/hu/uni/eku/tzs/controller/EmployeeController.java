@@ -8,7 +8,7 @@ import hu.uni.eku.tzs.service.exceptions.EmployeeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.EmployeeNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,21 +28,35 @@ import java.util.stream.Collectors;
 @Api(tags = "Employees")
 @RequestMapping("/employees")
 @RestController
-@RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeManager employeeManager;
 
     private final EmployeeMapper employeeMapper;
 
+    public EmployeeController(@Qualifier("employeeManagerImpl")EmployeeManager employeeManager,
+                              EmployeeMapper employeeMapper) {
+        this.employeeManager = employeeManager;
+        this.employeeMapper = employeeMapper;
+    }
+
     @ApiOperation("Read All")
     @GetMapping(value = {"/", ""})
     public Collection<EmployeeDto> readAllEmployees() {
-        return employeeManager.readAll()
+        return employeeManager.readAllEmployees()
             .stream()
             .map(employeeMapper::employee2employeeDto)
             .collect(Collectors.toList());
 
+    }
+
+    @ApiOperation("Read All By Office")
+    @GetMapping(value = {"/office"})
+    public Collection<EmployeeDto> readAllEmployeesByOffice(@RequestParam String officeCode) {
+        return employeeManager.readAllByOffice(officeCode)
+            .stream()
+            .map(employeeMapper::employee2employeeDto)
+            .collect(Collectors.toList());
     }
 
     @ApiOperation("Record")

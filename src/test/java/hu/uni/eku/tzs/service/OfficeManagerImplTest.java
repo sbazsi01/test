@@ -106,7 +106,7 @@ class OfficeManagerImplTest {
         );
         when(officeRepository.findAll()).thenReturn(officeEntities);
         // when
-        Collection<Office> actualOffices = service.readAll();
+        Collection<Office> actualOffices = service.readAllOffices();
         // then
         assertThat(actualOffices)
                 .usingRecursiveComparison()
@@ -130,7 +130,7 @@ class OfficeManagerImplTest {
 
         public static String OFFICE_CODE_SAN_FRANCISCO = "1";
         public static String OFFICE_CODE_BOSTON = "2";
-        public static String OFFICE_CODE_PARIS = "3";
+        public static String OFFICE_CODE_PARIS = "4";
         public static String UNKNOWN_OFFICE_CODE = "10";
 
         public static Office getSanFranciscoOfficeModel() {

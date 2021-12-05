@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OfficeManagerImpl implements OfficeManager {
 
-    private final OfficeRepository officeRepository;
+    protected final OfficeRepository officeRepository;
 
-    private static Office convertOfficeEntity2Model(OfficeEntity officeEntity) {
+    protected static Office convertOfficeEntity2Model(OfficeEntity officeEntity) {
         return new Office(
                 officeEntity.getOfficeCode(),
                 officeEntity.getCity(),
@@ -32,7 +32,7 @@ public class OfficeManagerImpl implements OfficeManager {
         );
     }
 
-    private static OfficeEntity convertOfficeModel2Entity(Office office) {
+    protected static OfficeEntity convertOfficeModel2Entity(Office office) {
         return OfficeEntity.builder()
                 .officeCode(office.getOfficeCode())
                 .addressLine1(office.getAddressLine1())
@@ -68,7 +68,7 @@ public class OfficeManagerImpl implements OfficeManager {
     }
 
     @Override
-    public Collection<Office> readAll() {
+    public Collection<Office> readAllOffices() {
         return officeRepository.findAll().stream().map(OfficeManagerImpl::convertOfficeEntity2Model)
                 .collect(Collectors.toList());
     }

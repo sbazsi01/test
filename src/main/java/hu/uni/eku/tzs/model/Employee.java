@@ -25,8 +25,7 @@ public class Employee {
 
     private Office office;
 
-    // private Employee reportsTo;
-    private Integer reportsTo;
+    private Employee reportsTo;
 
     private String jobTitle;
 }

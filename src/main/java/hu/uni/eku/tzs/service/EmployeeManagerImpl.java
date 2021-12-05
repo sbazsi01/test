@@ -8,29 +8,29 @@ import hu.uni.eku.tzs.model.Employee;
 import hu.uni.eku.tzs.model.Office;
 import hu.uni.eku.tzs.service.exceptions.EmployeeAlreadyExistsException;
 import hu.uni.eku.tzs.service.exceptions.EmployeeNotFoundException;
-import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class EmployeeManagerImpl implements EmployeeManager {
+public class EmployeeManagerImpl extends OfficeManagerImpl implements EmployeeManager {
 
-    private final EmployeeRepository employeeRepository;
+    protected final EmployeeRepository employeeRepository;
 
-    private final OfficeRepository officeRepository;
+    public EmployeeManagerImpl(EmployeeRepository employeeRepository,
+                               OfficeRepository officeRepository) {
+        super(officeRepository);
+        this.employeeRepository = employeeRepository;
+    }
 
-    private Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
-        /*Employee reportsTo;
-        if(employeeEntity.getReportsTo()==null){
-            reportsTo=null;
+    public static Employee convertEmployeeEntity2Model(EmployeeEntity employeeEntity) {
+        Employee reportsTo;
+        if (employeeEntity.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeEntity2Model(employeeEntity.getReportsTo());
         }
-        else{
-            reportsTo=readByEmployeeNumber(employeeEntity.getReportsTo().getEmployeeNumber());
-        }*/
 
         return new Employee(
             employeeEntity.getEmployeeNumber(),
@@ -38,24 +38,19 @@ public class EmployeeManagerImpl implements EmployeeManager {
             employeeEntity.getFirstName(),
             employeeEntity.getExtension(),
             employeeEntity.getEmail(),
-            new Office(
-                    employeeEntity.getOffice().getOfficeCode(),
-                    employeeEntity.getOffice().getCity(),
-                    employeeEntity.getOffice().getPhone(),
-                    employeeEntity.getOffice().getAddressLine1(),
-                    employeeEntity.getOffice().getAddressLine2(),
-                    employeeEntity.getOffice().getState(),
-                    employeeEntity.getOffice().getCountry(),
-                    employeeEntity.getOffice().getPostalCode(),
-                    employeeEntity.getOffice().getTerritory()
-            ),
-            /* reportsTo,*/
-            employeeEntity.getReportsTo(),
+            convertOfficeEntity2Model(employeeEntity.getOffice()),
+            reportsTo,
             employeeEntity.getJobTitle()
         );
     }
 
-    private static EmployeeEntity convertEmployeeModel2Entity(Employee employee) {
+    protected static EmployeeEntity convertEmployeeModel2Entity(Employee employee) {
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
         return EmployeeEntity.builder()
             .employeeNumber(employee.getEmployeeNumber())
             .lastName(employee.getLastName())
@@ -63,8 +58,7 @@ public class EmployeeManagerImpl implements EmployeeManager {
             .extension(employee.getExtension())
             .email(employee.getEmail())
             .office(convertOfficeModel2Entity(employee.getOffice()))
-            // .reportsTo(convertEmployeeModel2Entity(employee.getReportsTo()))
-            .reportsTo(employee.getReportsTo())
+            .reportsTo(reportsTo)
             .jobTitle(employee.getJobTitle())
             .build();
     }
@@ -74,8 +68,13 @@ public class EmployeeManagerImpl implements EmployeeManager {
         if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
             throw new EmployeeAlreadyExistsException();
         }
-        //  EmployeeEntity reportsTo = this.readOrRecordEmployee(employee.getReportsTo());
         OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
         EmployeeEntity employeeEntity = employeeRepository.save(
             EmployeeEntity.builder()
                 .employeeNumber(employee.getEmployeeNumber())
@@ -83,18 +82,16 @@ public class EmployeeManagerImpl implements EmployeeManager {
                 .firstName(employee.getFirstName())
                 .extension(employee.getExtension())
                 .email(employee.getEmail())
-                .office(convertOfficeModel2Entity(employee.getOffice()))
-                // .reportsTo(convertEmployeeModel2Entity(employee.getReportsTo()))
-                .reportsTo(employee.getReportsTo())
+                .office(officeEntity)
+                .reportsTo(reportsTo)
                 .jobTitle(employee.getJobTitle())
                 .build()
         );
         return convertEmployeeEntity2Model(employeeEntity);
     }
 
-    @SneakyThrows
     @Override
-    public Employee readByEmployeeNumber(Integer employeeNumber)  {
+    public Employee readByEmployeeNumber(Integer employeeNumber) throws EmployeeNotFoundException {
         Optional<EmployeeEntity> entity = employeeRepository.findById(employeeNumber);
         if (entity.isEmpty()) {
             throw new EmployeeNotFoundException(String.format("Cannot find employee with number %d", employeeNumber));
@@ -104,8 +101,15 @@ public class EmployeeManagerImpl implements EmployeeManager {
     }
 
     @Override
-    public Collection<Employee> readAll() {
-        return employeeRepository.findAll().stream().map(this::convertEmployeeEntity2Model)
+    public Collection<Employee> readAllEmployees() {
+        return employeeRepository.findAll().stream().map(EmployeeManagerImpl::convertEmployeeEntity2Model)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Employee> readAllByOffice(String officeCode) {
+        return employeeRepository.findAllByOffice(officeCode).stream()
+            .map(EmployeeManagerImpl::convertEmployeeEntity2Model)
             .collect(Collectors.toList());
     }
 
@@ -121,10 +125,17 @@ public class EmployeeManagerImpl implements EmployeeManager {
 
     }
 
-    private EmployeeEntity readOrRecordEmployee(Employee employee) {
+    public EmployeeEntity readOrRecordEmployee(Employee employee) {
         if (employeeRepository.findById(employee.getEmployeeNumber()).isPresent()) {
             return employeeRepository.findById(employee.getEmployeeNumber()).get();
         }
+        EmployeeEntity reportsTo;
+        if (employee.getReportsTo() == null) {
+            reportsTo = null;
+        } else {
+            reportsTo = convertEmployeeModel2Entity(employee.getReportsTo());
+        }
+        OfficeEntity officeEntity = this.readOrRecordOffice(employee.getOffice());
         return employeeRepository.save(
             EmployeeEntity.builder()
                 .employeeNumber(employee.getEmployeeNumber())
@@ -132,15 +143,14 @@ public class EmployeeManagerImpl implements EmployeeManager {
                 .firstName(employee.getFirstName())
                 .extension(employee.getExtension())
                 .email(employee.getEmail())
-                .office(convertOfficeModel2Entity(employee.getOffice()))
-                // .reportsTo(convertEmployeeModel2Entity(employee.getReportsTo()))
-                .reportsTo(employee.getReportsTo())
+                .office(officeEntity)
+                .reportsTo(reportsTo)
                 .jobTitle(employee.getJobTitle())
                 .build()
         );
     }
 
-    private OfficeEntity readOrRecordOffice(Office office) {
+    public OfficeEntity readOrRecordOffice(Office office) {
         if (officeRepository.findById(office.getOfficeCode()).isPresent()) {
             return officeRepository.findById(office.getOfficeCode()).get();
         }
@@ -157,19 +167,5 @@ public class EmployeeManagerImpl implements EmployeeManager {
                         .territory(office.getTerritory())
                         .build()
         );
-    }
-
-    public static OfficeEntity convertOfficeModel2Entity(Office office) {
-        return OfficeEntity.builder()
-                .officeCode(office.getOfficeCode())
-                .addressLine1(office.getAddressLine1())
-                .addressLine2(office.getAddressLine2())
-                .city(office.getCity())
-                .country(office.getCountry())
-                .state(office.getState())
-                .phone(office.getPhone())
-                .postalCode(office.getPostalCode())
-                .territory(office.getTerritory())
-                .build();
     }
 }

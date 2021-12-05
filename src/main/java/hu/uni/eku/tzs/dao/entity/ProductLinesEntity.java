@@ -14,7 +14,7 @@ import javax.persistence.Lob;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "productLines")
+@Entity(name = "productlines")
 public class ProductLinesEntity {
     @Id
     private String productLine;
