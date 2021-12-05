@@ -1,9 +1,7 @@
 package hu.uni.eku.tzs.controller;
 
-import hu.uni.eku.tzs.controller.dto.BookDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailDto;
 import hu.uni.eku.tzs.controller.dto.OrderDetailMapper;
-import hu.uni.eku.tzs.model.Book;
 import hu.uni.eku.tzs.model.OrderDetail;
 import hu.uni.eku.tzs.service.OrderDetailManager;
 import hu.uni.eku.tzs.service.exceptions.BookAlreadyExistsException;
@@ -74,6 +72,22 @@ class OrderDetailControllerTest {
         assertThatThrownBy(() -> {
             controller.create(orderDetailDto);
         }).isInstanceOf(ResponseStatusException.class);
+    }
+
+    @Test
+    void updateHappyPath() {
+        // given
+        OrderDetailDto requestDto = TestDataProvider.getOrder66Dto();
+        OrderDetail orderDetail = TestDataProvider.getOrder66();
+        when(orderDetailMapper.orderDetailDto2orderDetail(requestDto)).thenReturn(orderDetail);
+        when(orderDetailManager.modify(orderDetail)).thenReturn(orderDetail);
+        when(orderDetailMapper.orderDetail2orderDetailDto(orderDetail)).thenReturn(requestDto);
+        OrderDetailDto expected = TestDataProvider.getOrder66Dto();
+        // when
+        OrderDetailDto response = controller.update(requestDto);
+        // then
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(expected);
     }
 
     private static class TestDataProvider {
