@@ -131,7 +131,7 @@ public class PaymentControllerTest {
                     "x2028",
                     "ghernande@classicmodelcars.com",
                     getParisOfficeModel(),
-                    1102,
+                    null,
                     "Sales Rep"
             );
         }
@@ -144,7 +144,7 @@ public class PaymentControllerTest {
                     .extension("x2028")
                     .email("ghernande@classicmodelcars.com")
                     .office(getParisOfficeDto())
-                    .reportsTo(1102)
+                    .reportsTo(null)
                     .jobTitle("Sales Rep")
                     .build();
         }
