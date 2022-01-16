@@ -24,12 +24,14 @@ Backend:
 
 ### 2.3 Ütemterv
 
-Sprint 1 3-4.hét
-Sprint 2 5-6.hét
-Sprint 3 7-8.hét
-Sprint 4 9-10.hét
-Sprint 5 11-12.hét
-Bemutatás 13.hét
+| Folyamat  | Idő       |
+|-----------|-----------|
+| Sprint 1  | 3-4.hét   |
+| Sprint 2  | 5-6.hét   |
+| Sprint 3  | 7-8.hét   |
+| Sprint 4  | 9-10.hét  |
+| Sprint 5  | 11-12.hét |
+| Bemutatás | 13. hét   |
 
 ### 2.4 Mérföldkövek
 
@@ -38,8 +40,8 @@ Bemutatás 13.hét
 ## 3. Üzleti folyamatok modellje
 
 ### 3.1 Üzleti szereplők
-Vásárló
-Megrendelő
+- Vásárló
+- Megrendelő
 
 ### 3.2 Üzleti folyamatok
 
@@ -66,7 +68,6 @@ A vásárló megrendel egy vagy több terméket, a megrendelés bekerül a rends
 Az adminisztrátorok minden az alkalmazottaknál felsorolt funkciót elérnek, továbbá a következőket:
 
 -   Alkalmazott regisztrálása: Az employees táblába felvételre kerül az alkalmazott
-- 
 -   Alkalmazott törlése: Az employees táblából törlésre kerül az alkalmazott
 
 #### Üzleti folyamatok olvasók számára:
@@ -101,7 +102,7 @@ Az adminisztrátorok minden az alkalmazottaknál felsorolt funkciót elérnek, t
         -   Együttműködési követelmények A szoftverfejlesztő cég szakemberei és a megrendelő közötti kapcsolattartást a szerződésben meghatározott személyek végzik. Szükség esetén mindkét oldalról bevonnak további szakembereket az együttműködés optimalizálása céljából.
         -   Etikai követelmények A szoftverfejlesztő cég munkatársainak a jóváhagyott etikai kódex alapján kell viselkedniük.
         -   Jogi követelmények
-            -   Titokvédelmi követelmények E téren a törvényi előírások az irányadók. A fejlesztő cég munkatársai vállalják, hogy a sem a könyvtár dolgozóinak, sem a felhasználók adatait harmadik fél számára nem adják át, továbbá a sikeres átadás átvételt követően a nem üzleti jellegű adatokat megsemmisítik.
+            -   Titokvédelmi követelmények E téren a törvényi előírások az irányadók. A fejlesztő cég munkatársai vállalják, hogy a sem az iroda dolgozóinak, sem a felhasználók adatait harmadik fél számára nem adják át, továbbá a sikeres átadás átvételt követően a nem üzleti jellegű adatokat megsemmisítik.
             -   Biztonsági követelmények A szoftverfejlesztés során a felhasználók számára egylépcsős beléptetési rendszer lesz implementálva.
 
 ### 4.3 Törvényi előírások, szabványok
@@ -143,7 +144,7 @@ ISO / IEC 15504 Információs technológia — folyamatértékelés, más néven
 
 A rendszerünkben két rendszerszereplő csoportot különböztetünk meg. Az egyik a megrendeléseket tevő vásárlók csoportja. A másik a irodai adminisztrációt végző alkalmazottak csoportja. Az vásárlók igénybe veszik a rendszer szolgáltatásait, míg az alkalmazottak ezt kiszolgálják az olvasókat. Az alkalmazottak több jogosultsággal rendelkeznek, mint a vásárlók.  A alkalmazott csoport része az adminisztrátori jogosultsággal rendelkező alkalmazottak csoportja, akik teljes jogosultsággal rendelkeznek. Ők végzik a rendszerben az alkalmazottak adminisztrálását.
 
-### 5.3 Határ osztályok
+### 5.2 Határ osztályok
 
 #### A vásárló felhasználói tevékenységeihez kapcsolódó határosztályok
  - orders
@@ -186,20 +187,20 @@ Nincsenek vásárolt szoftverkomponensek.
 
 HTTP protokollon keresztül szolgálja ki webes felületen a rendszer felhasználóit. Az adatok tárolása a MySql adatbázis szerveren történik.
 
-### 8.2 Az alkalmazás rétegei, fő komponensei, ezek kapcsolatai
+### 8.1 Az alkalmazás rétegei, fő komponensei, ezek kapcsolatai
 
 A backend a webszereveren fut, a vékony kliens a böngészőből elérhető a felhasználók számára. Adatbázis szerver (Adatbázis) <-------> Webszerver (Üzleti logika) <-------> Kliens (Felhasználói felület)
 
-### 8.3 Változások kezelése
+### 8.2 Változások kezelése
 
 Minden változás lekezelése szerver oldalon történik, a kliens oldalon nincs szükség új komponensek telepítésére.
 
 ## 9. Adatbázisterv
 
-### Adatbázis séma
+### 9.1 Adatbázis séma
 ![classicmodels.png](https://github.com/sbazsi01/test/blob/main/classicmodels.png?raw=true)
 
-### 9.3 Fizikai adatmodellt legeneráló SQL szkript
+### 9.2 Fizikai adatmodellt legeneráló SQL szkript
 
 **A táblákat létrehozó parancsok**
 CREATE TABLE `productlines` (
@@ -309,7 +310,7 @@ CREATE TABLE `orderdetails` (
 
 ## 10. Implementációs terv
 
-A webszerveren futó java program tartalmazza az üzleti logikát. A felhasználói felület, ami böngészőben megjelenő weboldalak formájában érhető el Swagger felhasználásával készülnek.
+A webszerveren futó java program tartalmazza az üzleti logikát. A felhasználói felület  Swagger felhasználásával készül.
 MySql adatbázis szervert használunk az adatok tárolására.
 
 ### 10.1 Perzisztencia osztályok
@@ -336,7 +337,7 @@ MySql adatbázis szervert használunk az adatok tárolására.
 
 A rendszerterv szerint implementált szoftver tesztelésének célja, hogy ellenőrizze az _Üzleti folyamatok modellje_ című pontban meghatározott folyamatok helyes, specifikáció szerinti lefutását, valamint hogy a kliens webes felület felhasználóbarát módon jelenik meg, és használható különböző hardver és szoftverkörnyezetben.
 
-A tesztelés során használt kiszolgáló hardverkonfigurációja a telepítés során használt hardverrel kompatibilis, teljesítményben (processzor, operatív memória, háttértár) nem tér el jelentősen. A telepítéshez természetesen az általunk ajánlott konfiguráció kerül beszerzésre a felhasználó könyvtár által.
+A tesztelés során használt kiszolgáló hardverkonfigurációja a telepítés során használt hardverrel kompatibilis, teljesítményben (processzor, operatív memória, háttértár) nem tér el jelentősen. A telepítéshez természetesen az általunk ajánlott konfiguráció kerül beszerzésre a felhasználó iroda által.
 
 A tesztelés során használt kliens hardverek a napjainkban általánosan elterjedt hardverkonfigurációjú PC-k illetve laptopok, melyeken a leggyakrabban használt böngészőkön (Google Chrome, Mozilla Firefox, Microsoft Edge) teszteljük a rendszert az alábbiakban részletezettek szerint. A minimum hardverkonfiguráció: Intel Celeron processzor, 4GB RAM, 128GB HDD, a képernyők felbontása: 1280x1024, 1920x1080.
 
@@ -355,14 +356,12 @@ A tesztelés során az üzleti folyamatokhoz tartozó különböző forgatókön
 | officeCode               | 1. Kötelező 2. Maximum 10 karakter hosszú legyen, csak számok szerepelhetnek benne                                                                      |
 | reportsTo              | 1. Opcionális 2. Maximum 11 karakter hosszú legyen, csak számok szerepelhetnek benne                                                                     |
 | jobTitle | 1. Kötelező 2. Maximum 50 karakter hosszú legyen                                            
-| Telefonszám                  | 1. Kötelező 2. Kötött formátumú: 11 számjegy                                                                                          |
 | email                   | 1. Kötelező 2. Kötött formátumú: fióknév@domainnév                                                 
 
 **Tesztesetek:**
 
 1.  Bevitt adatok helyesek, megfelelnek a követelményeknek.  
-    Elvárt eredmény:  
-    a) Az alkalmazott táblában megjelenik az alkalmazott a megadott adatokkal.   
+    Elvárt eredmény:   Az alkalmazott táblában megjelenik az alkalmazott a megadott adatokkal.   
 2.  Bevitt adatok között szerepelnek a fenti követelményeknek nem megfelelő adatok.  
     Elvárt eredmény: a rendszer hibaüzenetben jelzi a felhasználó számára a hibákat, az adatbázisban nem jelenik meg új rekord az employees táblában. Ellenőrzés az 1. pont szerint.
 
@@ -378,7 +377,7 @@ A tesztelés során az üzleti folyamatokhoz tartozó különböző forgatókön
 **Tesztesetek:**
 1.  Létező azonosítójú alkalmazott törlése. Elvárt eredmény: a megfelelő rekord törlődik az employees táblából az adatbázisban. 
 
-### 11.2 Tesztelt üzleti folyamatok könyvtárosok számára:
+### 11.2 Tesztelt üzleti folyamatok alkalmazottak számára:
 
 **A) Rendelés adatainak módosítása:**  
 
