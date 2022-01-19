@@ -21,7 +21,7 @@
 -   Megfelelő alkalmazott azonosító megadása után megjelennek az alkalmazott adatai.
 -  Ha nincs megadva alkalmazott azonosító, akkor az összes alkalmazott adatai megjelennek.
 
-### Alkalmazott hozzáadása
+### Alkalmazottak hozzáadása
 - Már létező alkalmazott azonosító esetén, akkor nem kerül hozzáadásra az alkalmazott.
 - Ha az alkalmazott azonosító számokat tartalmaz, akkor nem kerül hozzáadásra az alkalmazott. 
 - Ha az egyik adat túl hosszú, nem kerül hozzáadásra az alkalmazott.
@@ -30,7 +30,7 @@
 - Ha a reports to mezőben nem létező alkalmazott azonosító van megadva, akkor hozzáadásra kerül az alkalmazott. 
 - Megfelelő adatokat megadva, hozzáadásra kerül az alkalmazott.
 
-### Alkalmazott módosítása
+### Alkalmazottak módosítása
 
 - Nem létező alkalmazott azonosító esetén, nem lesz módosítás.
 - Ha az egyik adat túl hosszú, akkor sikertelen a módosítás.
