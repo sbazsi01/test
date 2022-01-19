@@ -1,5 +1,5 @@
 
-# Könyvtári katalógus és nyilvántartó rendszer teszt jegyzőkönyv
+# Alkalmazottakkal kapcsolatos funkciók teszt jegyzőkönyv
 
 ## Tesztelést végezte: Sulyok Balázs
 
